@@ -38,5 +38,5 @@ There are two separate datasets: JM_data and Ph_Data.
 | Tail points          | 8                           | 8                         |
 | Max frames (duration) | 175 frames (250 ms)        | 40 frames (250 ms)        |
 | Environment conditions | 14 sensory contexts      | acidic/non-acidic      |
-| Tracking             | customsoftware        | Zebrazoom       |
+| Tracking             | custom software        | Zebrazoom       |
 
