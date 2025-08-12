@@ -29,21 +29,6 @@ The structure of the raw data (available at https://doi.org/10.5281/zenodo.13605
 
 There are two separate datasets: JM_data and Ph_Data.
 
-JM_data (referred to as (1)):
-- 463 fish (Tubingen zebrafish)
-- 700Hz temporal resolution
-- pixel size 58µm/27µm (depending on the size of the arena)
-- 8 tail points
-- up to 175 frames (250ms)
-
-Ph_Data (referred to as (8)):
-- 218 fish (AB zebrafish)
-- 160Hz temporal resolution
-- pixel size 70µm
-- 8 tail points
-- up to 40frames (250ms)
-- up to 40 frames
-
 | Feature              | JM_data (1)                 | Ph_Data (8)               |
 |----------------------|-----------------------------|---------------------------|
 | Number of fish       | 463                         | 218                       |
@@ -52,3 +37,6 @@ Ph_Data (referred to as (8)):
 | Pixel size           | 58 µm / 27 µm (depending on arena's size)               | 70 µm                     |
 | Tail points          | 8                           | 8                         |
 | Max frames (duration) | 175 frames (250 ms)        | 40 frames (250 ms)        |
+| Environment conditions | 14 sensory contexts      | acidic/non-acidic      |
+| Tracking             | customsoftware        | Zebrazoom       |
+
