@@ -1,0 +1,20 @@
+model:
+  d_model: 20
+  nhead: 4
+  num_layers: 2
+
+training:
+  batch_size: 64
+  lr: 1e-4
+  epochs: 100
+  optimizer: adam
+  loss: mse
+
+masking:
+  type: random
+  percentage: 0.3
+
+data:
+  path: "processed/bouts_20_5.pt"
+  input_dim: 20
+  sequence_length: 5

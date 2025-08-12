@@ -1,0 +1,8 @@
+zeb/
+Datasets/
+Datasets.tar.gz
+processed/
+_pycache/
+._*
+fish_bout_transformer.pth
+__pycache__/
