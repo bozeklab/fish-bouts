@@ -1,0 +1,14 @@
+#!/bin/bash -l
+
+#SBATCH --partition=train
+#SBATCH --mem=50G
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=7-00:00:00
+
+#SBATCH --job-name=train_1
+#SBATCH --output=sbatch/train.txt
+
+### begin of executable commands
+source zeb/bin/activate
+python3 main.py

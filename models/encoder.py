@@ -24,7 +24,7 @@ class PositionalEncoding(nn.Module):
 
 
 
-class FishBoutBERT(nn.Module):
+class FishBoutEncoder(nn.Module):
     """
     BERT-style masked model for continuous targets.
 
