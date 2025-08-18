@@ -6,3 +6,4 @@ _pycache/
 ._*
 fish_bout_transformer.pth
 __pycache__/
+wandb/

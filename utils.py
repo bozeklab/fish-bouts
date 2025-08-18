@@ -37,6 +37,17 @@ def apply_mask(x, mask_type='last', mask_ratio=0.3):
     return x_masked, mask
 
 
+def compute_statistics(data):
+    mean = torch.mean(data, dim=0)
+    std = torch.std(data, dim=0)
+    min_val = torch.min(data, dim=0).values
+    max_val = torch.max(data, dim=0).values
+
+    print(f"Mean: {mean}, Std: {std}, Min: {min_val}, Max: {max_val}")
+
+    return mean, std, min_val, max_val
+
+
 def plot_loss_curve(history):
     epochs = [h["epoch"] for h in history]
     train_losses = [h["train_loss"] for h in history]

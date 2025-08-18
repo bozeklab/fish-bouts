@@ -1,0 +1,86 @@
+.
+├── config.yaml
+├── Datasets
+│   ├── JM_data
+│   │   ├── cg2_labels.npy
+│   │   ├── cg4_labels.npy
+│   │   ├── cg7_labels.npy
+│   │   ├── classnames_jm.npy
+│   │   ├── eigfs_n1200.npy
+│   │   ├── Entropy_seeds_delays_clusters.h5
+│   │   ├── filtered_jmpool_kin.h5
+│   │   ├── kmeans_labels_K5_N1200_s8684.h5
+│   │   ├── P_ensemble_ex8_N1200_s8684.npy
+│   │   ├── pool_ex8_PCs.h5
+│   │   ├── posterior.npy
+│   │   ├── simlabels_fish_K5_N1200_tau3_cg2.h5
+│   │   ├── simlabels_fish_K5_N1200_tau3_cg4.h5
+│   │   ├── simlabels_fish_K5_N1200_tau3_cg7.h5
+│   │   ├── spectral_split_g7.npy
+│   │   └── zebrafish_ms_sims
+│   └── Ph_Data
+│       ├── Entropy_seeds_delays_clusters.h5
+│       ├── filtered_phdata9_condition_3.h5
+│       └── kmeans_labels_K7_N1100.h5
+├── Datasets.tar.gz
+├── evaluate.py
+├── evaluation_results.json
+├── fish_bout_transformer.pth
+├── loss_curve.png
+├── main.py
+├── models
+│   ├── __pycache__
+│   │   └── transformer.cpython-310.pyc
+│   └── transformer.py
+├── process_data.py
+├── processed
+│   └── bouts_20_5.pt
+├── __pycache__
+│   ├── evaluate.cpython-310.pyc
+│   ├── process_data.cpython-310.pyc
+│   ├── train.cpython-310.pyc
+│   └── utils.cpython-310.pyc
+├── README.md
+├── scratchpad2.py
+├── scratchpad3.py
+├── scratchpad.py
+├── structure.txt
+├── training_log.json
+├── train.py
+├── umap_plot.png
+├── utils.py
+└── zeb
+    ├── bin
+    │   ├── activate
+    │   ├── activate.csh
+    │   ├── activate.fish
+    │   ├── Activate.ps1
+    │   ├── f2py
+    │   ├── fonttools
+    │   ├── isympy
+    │   ├── numba
+    │   ├── numpy-config
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.10
+    │   ├── proton
+    │   ├── proton-viewer
+    │   ├── pyaml
+    │   ├── pyftmerge
+    │   ├── pyftsubset
+    │   ├── python -> /opt/miniforge3/bin/python
+    │   ├── python3 -> python
+    │   ├── python3.10 -> python
+    │   ├── torchfrtrace
+    │   ├── torchrun
+    │   ├── tqdm
+    │   └── ttx
+    ├── include
+    ├── lib
+    │   └── python3.10
+    ├── lib64 -> lib
+    ├── pyvenv.cfg
+    └── share
+        └── man
+
+17 directories, 67 files

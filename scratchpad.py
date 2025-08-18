@@ -5,38 +5,30 @@ from sklearn.manifold import TSNE
 import umap
 import torch
 
-# ['MetaData', 'cov', 'data_means', 'eigvecs', 'max_shuffs', 'pca_fish', 'seeds', 'var_exp']
-
-file_path = 'Datasets/JM_data/pool_ex8_PCs.h5'
-with h5py.File(file_path, 'r') as f:
-    print(list(f.keys()))  # List top-level groups/datasets
-
+# Load PCA data from HDF5 file
 with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     data = f['MetaData']
     print(type(data))           # Check if it's a group or dataset
     print(list(data.keys()))    # If it's a group, list its contents
 
-with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     lengths_data = f['MetaData/lengths_data'][:]
     print(lengths_data.shape)
     print(lengths_data)
 
-with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     data = f['var_exp']
     print(type(data))
     print(data.shape)
     print(data[:])
 
-with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     print(f"{f['cov'].shape=}") 
     print(f"{f['data_means'].shape=}")  
+    print(f"{f['data_means'][:]=}")  
     print(f"{f['eigvecs'].shape=}") 
     print(f"{f['max_shuffs'].shape=}")  
     print(f"{f['pca_fish'].shape=}")  
     print(f"{f['seeds'].shape=}") 
     print(f"{f['var_exp'].shape=}") 
 
-with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     pca = np.array(f['pca_fish'])[:, :, :20]  # Extract only first 20 PCA components
     print(f"{pca.shape=}")  # Should be (463, 11651, 20)
 
@@ -113,3 +105,5 @@ print(f"Max non-zero bouts per fish: {np.max(nonzero_counts)}")
 # plt.xlabel("Dim 1")
 # plt.ylabel("Dim 2")
 # plt.show()
+
+

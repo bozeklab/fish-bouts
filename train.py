@@ -1,19 +1,39 @@
-import torch
 import math
 import json
+import wandb
+import torch
 
 from torch import nn
 from torch.nn import Transformer
 from torch.utils.data import DataLoader, TensorDataset
 
 from process_data import process_data, load_preprocessed_data
-from models.transformer import FishBoutBERT
+from models.encoder import FishBoutEncoder
 from utils import apply_mask
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, mask_type, mask_ratio, device, log_path="training_log.json"):
+def train_model(
+    model,
+    train_loader,
+    val_loader,
+    criterion,
+    optimizer,
+    num_epochs,
+    mask_type,
+    mask_ratio,
+    device,
+    log_path="training_log.json",
+    wandb_log=False,
+    patience=10,
+    delta=0.0001,
+    save_best_path="best_model.pth"
+
+):
     model.to(device)
     history = []  # store {"epoch": X, "train_loss": Y, "val_loss": Z}
+
+    best_val_loss = float("inf")
+    patience_counter = 0
 
     for epoch in range(num_epochs):
         # ---- Training ----
@@ -69,6 +89,26 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         })
 
         print(f"Epoch {epoch+1} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f}")
+
+        if wandb_log:
+            wandb.log({
+                "epoch": epoch + 1,
+                "train_loss": avg_train_loss,
+                "val_loss": avg_val_loss
+            })
+
+        # ---- Early Stopping Check ----
+        if avg_val_loss < best_val_loss - delta:
+            best_val_loss = avg_val_loss
+            patience_counter = 0
+            torch.save(model.state_dict(), save_best_path)
+            print(f"Validation loss improved. Model saved to {save_best_path}")
+        else:
+            patience_counter += 1
+            print(f"No improvement. Early stopping patience {patience_counter}/{patience}")
+            if patience_counter >= patience:
+                print("Early stopping triggered!")
+                break
 
     # Save to JSON file
     with open(log_path, "w") as f:
