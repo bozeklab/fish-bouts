@@ -81,7 +81,17 @@ For q=7: left/right variants of slow and fast wandering, and of fast cruising:
   - 'entropies' (100, 9, 22): for each (s, K, n) tuple the entropy of the corresponding transition matrix
   - 'n_clusters' (22,): values of n that were investigated (50,  150,  250, ... 2050, 2150)
   - 'seeds' (100,): values of 100 random seeds used
-- ```filtered_jmpool_kin.h5``` 
+- ```filtered_jmpool_kin.h5```
+  - 'MetaData',
+  - 'bout_types' (463, 11651): for each bout classifies into one of 13 motor strategies (J_turn, Approach Swim etc.).
+  - 'converge_bouts' (463, 11651, 175): 
+  - 'eye_convergence' (463, 11651): 
+  - 'eye_convergence_state' (463, 11651):
+  - 'head_pos' (463, 11651, 175, 2): for each of 463 fish, for each of 11651 bouts, for each of 175 frames contains 2-dimensional position of the head
+  - 'orientation_smooth' (463, 11651, 175)
+  - 'speed_head' (463, 11651, 175): 
+  - 'stims' (463, 11651)
+  - 'times_bouts' (463, 11651, 2)
 - ```kmeans_labels_K5_N1200_s8684.h5```
 - ```P_ensemble_ex8_N1200_s8684.npy``` contains the ensemble matrix of shape (1200, 1200)
 - ```simlabels_fish_K5_N1200_tau3_cg2.h5```
