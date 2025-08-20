@@ -61,11 +61,23 @@ For q=7: left/right variants of slow and fast wandering, and of fast cruising.
 - ```pool_ex8_PCs.h5``` contains
   - 'pca_fish': the first 50 PCA components of the fish bouts (out of which only first 20 are used).
   - 'var_exp': the amount of variance explained by the PCA components.
-  - 'eigvecs'
-  - 'data_means'
-  - 'cov'
+  - 'eigvecs': 
+  - 'data_means': 
+  - 'cov': 
   - 'max_shuffs'
-  - 'seeds'
+  - 'seeds': values of 10 random seeds used
 - ```spectral_split_g7.npy``` contains classification of each of 463 fish into one of 7 classes.
 - ```posterior.npy``` contains for each of 463 fish the posterior probability distribution over 7 points.
-- 
+- ```eigfs_n1200.npy``` contains a numpy array of shape (1200, 10)
+- ```Entropy_seeds_delays_clusters.h5``` contains:
+  - 'K_range' (9,): values of K that were investigated (1-9)
+  - 'entropies' (100, 9, 22): for each (s, K, n) tuple the entropy of the corresponding transition matrix
+  - 'n_clusters' (22,): values of n that were investigated (50,  150,  250, ... 2050, 2150)
+  - 'seeds' (100,): values of 100 random seeds used
+- ```filtered_jmpool_kin.h5``` 
+- ```kmeans_labels_K5_N1200_s8684.h5```
+- ```P_ensemble_ex8_N1200_s8684.npy``` contains the ensemble matrix of shape (1200, 1200)
+- ```simlabels_fish_K5_N1200_tau3_cg2.h5```
+- ```simlabels_fish_K5_N1200_tau3_cg4.h5```
+- ```simlabels_fish_K5_N1200_tau3_cg7.h5```
+- ```zebrafish_ms_sims```
