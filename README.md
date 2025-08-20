@@ -83,7 +83,7 @@ For q=7: left/right variants of slow and fast wandering, and of fast cruising:
   - 'seeds' (100,): values of 100 random seeds used
 - ```filtered_jmpool_kin.h5```
   - 'MetaData',
-  - 'bout_types' (463, 11651): for each bout classifies into one of 13 motor strategies (J_turn, Approach Swim etc.).
+  - 'bout_types' (463, 11651): for each bout classifies into one of 13 motor strategies (J_turn, Approach Swim etc.) (1-13 and 15 used for padding).
   - 'converge_bouts' (463, 11651, 175): 
   - 'eye_convergence' (463, 11651): 
   - 'eye_convergence_state' (463, 11651):
