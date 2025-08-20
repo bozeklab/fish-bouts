@@ -55,7 +55,14 @@ For q=2: low (“cruising”) and high (“wandering”) rate of reorientation.
 
 For q=4: slow and fast variations of cruising and wandering.
 
-For q=7: left/right variants of slow and fast wandering, and of fast cruising.
+For q=7: left/right variants of slow and fast wandering, and of fast cruising:
+    1. left slow wandering
+    2. right slow wandering
+    3. left fast wandering
+    4. right fast wandering
+    5. left fast cruising
+    6. right fast cruising
+    7. slow cruising
 
 - ```classnames_jm.npy``` contains names of the 13 different motor strategies (J_turn, Approach Swim etc.).
 - ```pool_ex8_PCs.h5``` contains
