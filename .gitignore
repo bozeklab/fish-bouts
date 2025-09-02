@@ -2,8 +2,10 @@ zeb/
 Datasets/
 Datasets.tar.gz
 processed/
+processed_data/
 _pycache/
 ._*
 fish_bout_transformer.pth
 __pycache__/
 wandb/
+motor_strategy_plots/
