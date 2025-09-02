@@ -6,12 +6,11 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --time=7-00:00:00
 
-#SBATCH --job-name=train_0
-#SBATCH --output=sbatch/train_.txt
+#SBATCH --job-name=wandb_sweep
+#SBATCH --output=sbatch/wandb_sweep-%j.txt
 
 ### begin of executable commands
-timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
-logfile="sbatch/train_${timestamp}.txt"
-
 source zeb/bin/activate
-python3 main.py > "$logfile" 2>&1
+
+### wandb agent bozek-lab/klyczek/v2sjwrri
+wandb agent bozek-lab/klyczek/cj17bzt9

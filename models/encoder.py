@@ -43,13 +43,10 @@ class FishBoutEncoder(nn.Module):
              Typically you compute loss only at masked positions.
     """
 
-    def __init__(self, input_dim, target_dim, d_model=128, nhead=4,
-                 num_encoder_layers=2, dim_feedforward=128, dropout=0.1,
-                 seq_len=5):
+    def __init__(self, input_dim, seq_len, d_model, nhead,
+                 num_layers, dim_feedforward, dropout):
         super().__init__()
-
-        self.d_model = d_model
-
+        
         # Input projection to model dimension
         self.input_proj = nn.Linear(input_dim, d_model)
         self.pos_encoder = PositionalEncoding(d_model, dropout=dropout, max_len=seq_len)
@@ -59,13 +56,16 @@ class FishBoutEncoder(nn.Module):
         nn.init.normal_(self.mask_embedding, mean=0.0, std=0.02)
 
         # Transformer encoder (bidirectional attention)
-        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead,
+        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, 
+                                                   nhead=nhead,
                                                    dim_feedforward=dim_feedforward,
-                                                   dropout=dropout, batch_first=True)
-        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_encoder_layers)
+                                                   dropout=dropout, 
+                                                   batch_first=True)
+        
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
 
         # Output projection back to target space (e.g., regression values)
-        self.output = nn.Linear(d_model, target_dim)
+        self.output = nn.Linear(d_model, input_dim)
 
     def forward(self, src, mask_positions=None):
         """

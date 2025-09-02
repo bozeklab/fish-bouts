@@ -1,8 +1,8 @@
 import torch
 import matplotlib.pyplot as plt
+import numpy as np
 
-
-def apply_mask(x, mask_type='last', mask_ratio=0.3):
+def apply_mask(x, mask_type='last', mask_ratio=0.3, if_print=False):
     """
     Apply masking to the input sequence.
 
@@ -28,9 +28,10 @@ def apply_mask(x, mask_type='last', mask_ratio=0.3):
             mask[i, mask_idx] = True
 
     elif mask_type == 'last':
+        # if if_print:
+        #     print(f"{x_masked[:, -num_mask:]=}")
         x_masked[:, -num_mask:] = 0.0
         mask[:, -num_mask:] = True
-
     else:
         raise ValueError("mask_type must be 'random' or 'last'")
 
@@ -38,12 +39,35 @@ def apply_mask(x, mask_type='last', mask_ratio=0.3):
 
 
 def compute_statistics(data):
-    mean = torch.mean(data, dim=0)
-    std = torch.std(data, dim=0)
-    min_val = torch.min(data, dim=0).values
-    max_val = torch.max(data, dim=0).values
+    print("Computing statistics...")
+    
+    print("data shape", data.shape)
 
-    print(f"Mean: {mean}, Std: {std}, Min: {min_val}, Max: {max_val}")
+    mean = np.mean(data, axis=0)
+    std = np.std(data, axis=0)
+    min_val = np.min(data, axis=0)
+    max_val = np.max(data, axis=0)
+
+    print(f"Mean: {mean}")
+    print(f"Std: {std}")
+    print(f"Min: {min_val}")
+    print(f"Max: {max_val}")
+
+    plt.figure(figsize=(12, 6))
+    plt.boxplot(data, positions=np.arange(1, 21), flierprops={'marker': '.', 'markersize': 1, 'markerfacecolor': 'gray'})
+
+    # Overlay mean, min, max, and ±1 std
+    """plt.plot(np.arange(1, 21), mean, "o-", label="Mean", color="red")
+    plt.plot(np.arange(1, 21), min_val, "x-", label="Min", color="blue")
+    plt.plot(np.arange(1, 21), max_val, "x-", label="Max", color="green")
+    plt.plot(np.arange(1, 21), mean - std, "--", label="Mean - Std", color="orange")
+    plt.plot(np.arange(1, 21), mean + std, "--", label="Mean + Std", color="orange")"""
+
+    #plt.xlabel("Component")
+    #plt.ylabel("Value")
+    plt.xticks(np.arange(1, 21))
+    plt.legend()
+    plt.savefig("statistics_plot.png")
 
     return mean, std, min_val, max_val
 
