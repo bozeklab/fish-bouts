@@ -1,32 +1,35 @@
 model:
   nhead: 4
   num_layers: 4
-  d_model: 16
-  dim_feedforward: 64
+  d_model: 8
+  dim_feedforward: 32
   dropout: 0.0
 
 training:
-  batch_size: 64
-  lr: 1e-3
-  epochs: 5000
+  single_instance_overfit: True
+  batch_size: 1
+  lr: 3e-3
+  epochs: 500
   optimizer: adam
-  loss: mse
+  loss: cross_entropy
   train_fraction: 0.7
   val_fraction: 0.15
   early_stopping:
     enabled: true
-    patience: 20
-    delta: 1e-4
+    patience: 30
+    delta: 1e-5
 
 masking:
   type: random
   percentage: 0.1
 
 data:
+  process_data_first: true
+  one_hot: True
   raw_path: 'Datasets/JM_data/pool_ex8_PCs.h5'
   conditions_path: 'sensory_contexts_data.npy'
-  processed_dir: "processed_data"
-  input_dim: 20
-  sequence_length: 5
+  processed_dir: "Datasets/one_hot_processed/"
+  input_dim: 13
+  sequence_length: 10
 
 seed: 42

@@ -11,6 +11,8 @@ import torch
 conditions_idx = np.load('sensory_contexts_data.npy')
 print(f"{conditions_idx.shape=}")
 
+
+
 with h5py.File('Datasets/JM_data/pool_ex8_PCs.h5', 'r') as f:
     pca = np.array(f['pca_fish'])[:, :, :20]  # Extract only first 20 PCA components
 

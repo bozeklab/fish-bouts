@@ -3,7 +3,7 @@ import torch.nn as nn
 import math
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, dropout=0.1, max_len=5000):
+    def __init__(self, d_model, max_len, dropout):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
 
@@ -20,6 +20,7 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         # x: (batch_size, seq_len, d_model)
         x = x + self.pe[:, :x.size(1), :]  # broadcasting
+        #print(f"{self.pe[:, :x.size(1), :]=}")
         return self.dropout(x)
 
 
@@ -49,7 +50,7 @@ class FishBoutEncoder(nn.Module):
         
         # Input projection to model dimension
         self.input_proj = nn.Linear(input_dim, d_model)
-        self.pos_encoder = PositionalEncoding(d_model, dropout=dropout, max_len=seq_len)
+        self.pos_encoder = PositionalEncoding(d_model=d_model, dropout=dropout, max_len=seq_len)
 
         # Learnable mask embedding (used to replace masked positions)
         self.mask_embedding = nn.Parameter(torch.zeros(d_model))
@@ -64,7 +65,6 @@ class FishBoutEncoder(nn.Module):
         
         self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
 
-        # Output projection back to target space (e.g., regression values)
         self.output = nn.Linear(d_model, input_dim)
 
     def forward(self, src, mask_positions=None):
@@ -73,6 +73,9 @@ class FishBoutEncoder(nn.Module):
         mask_positions: None or (batch, seq_len) bool tensor
         """
         x = self.input_proj(src)  # -> (batch, seq_len, d_model)
+        # print(f"x after projection")
+        # print(f"{x.shape=}")
+        # print(f"{x=}")
         x = self.pos_encoder(x)
 
         if mask_positions is not None:

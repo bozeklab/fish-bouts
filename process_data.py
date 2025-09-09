@@ -4,8 +4,6 @@ import h5py
 import os
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-import yaml
-from utils import compute_statistics
 
 
 def make_sliding_windows(data, window_size):
@@ -117,7 +115,8 @@ def process_data_and_split(config):
     print(f"Sliding window shapes: train={X_train.shape}, val={X_val.shape}, test={X_test.shape}")
 
     # ---- Z-Normalization (one mean/std across all components) ----
-    mean = pca_train.mean()  
+    print(f"{pca_train.shape=}, {pca_val.shape=}, {pca_test.shape=}")
+    mean = pca_train.mean()
     std = pca_train.std() + 1e-8  # add eps to avoid div by zero
 
     print(f"Used for normalization Mean: {mean}, Std: {std}")
@@ -233,6 +232,7 @@ def one_hot_process_data_and_split(config, processed_dir='Datasets/one_hot_proce
 
 
 
+
     # ---- Convert to tensors and save ----
     all_splits = {
         'train': torch.tensor(X_train, dtype=torch.float32),
@@ -249,9 +249,8 @@ def one_hot_process_data_and_split(config, processed_dir='Datasets/one_hot_proce
 
     return all_splits
 
-with open("config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-    
-all_splits = one_hot_process_data_and_split(config)
-print(f"{all_splits['train'].shape=}, {all_splits['val'].shape=}, {all_splits['test'].shape=}")
-print(f"{all_splits['train'][:5]=}, {all_splits['val'][:5]=}, {all_splits['test'][:5]=}")
+
+
+
+
+
