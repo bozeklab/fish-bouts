@@ -9,3 +9,6 @@ fish_bout_transformer.pth
 __pycache__/
 wandb/
 motor_strategy_plots/
+*.npz
+best_model.pth
+sbatch/*

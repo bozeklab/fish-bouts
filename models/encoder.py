@@ -25,27 +25,22 @@ class PositionalEncoding(nn.Module):
 
 
 
-class FishBoutEncoder(nn.Module):
+class TransformerEncoder(nn.Module):
     """
-    BERT-style masked model for continuous targets.
-
-    - Uses only an encoder (bidirectional) like BERT.
-    - During training you should provide `mask_positions` indicating which
-      time steps should be predicted. The model replaces those positions
-      with a learned `mask_embedding` and predicts the original values.
+    BERT-style encoder with bidirectional attention.
 
     Forward:
       src: (batch, seq_len, input_dim)
-      mask_positions: optional bool tensor (batch, seq_len) where True means
+      mask_positions: (batch, seq_len) where True means
                       that position is masked and should be predicted.
 
     Returns:
       preds: (batch, seq_len, target_dim) -- model predictions for every position.
-             Typically you compute loss only at masked positions.
+             (but the loss will be computed only on masked positions)
     """
 
     def __init__(self, input_dim, seq_len, d_model, nhead,
-                 num_layers, dim_feedforward, dropout):
+                 num_layers, dim_feedforward, dropout, learnable_mask_embedding):
         super().__init__()
         
         # Input projection to model dimension
@@ -53,8 +48,10 @@ class FishBoutEncoder(nn.Module):
         self.pos_encoder = PositionalEncoding(d_model=d_model, dropout=dropout, max_len=seq_len)
 
         # Learnable mask embedding (used to replace masked positions)
-        self.mask_embedding = nn.Parameter(torch.zeros(d_model))
-        nn.init.normal_(self.mask_embedding, mean=0.0, std=0.02)
+        self.mask_embedding = None
+        if learnable_mask_embedding:
+            self.mask_embedding = nn.Parameter(torch.zeros(d_model))
+            nn.init.normal_(self.mask_embedding, mean=0.0, std=0.02)
 
         # Transformer encoder (bidirectional attention)
         encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, 
@@ -67,10 +64,10 @@ class FishBoutEncoder(nn.Module):
 
         self.output = nn.Linear(d_model, input_dim)
 
-    def forward(self, src, mask_positions=None):
+    def forward(self, src, mask_positions):
         """
         src: (batch, seq_len, input_dim)
-        mask_positions: None or (batch, seq_len) bool tensor
+        mask_positions: (batch, seq_len) bool tensor
         """
         x = self.input_proj(src)  # -> (batch, seq_len, d_model)
         # print(f"x after projection")
@@ -78,10 +75,9 @@ class FishBoutEncoder(nn.Module):
         # print(f"{x=}")
         x = self.pos_encoder(x)
 
-        if mask_positions is not None:
+        if self.mask_embedding is not None:
             # mask_positions: bool (batch, seq_len)
             # replace masked position embeddings with mask_embedding
-            # Expand mask_embedding to (batch, seq_len, d_model)
             mask_tok = self.mask_embedding.view(1, 1, -1)
             mask_tok = mask_tok.expand(x.size(0), x.size(1), -1)
 

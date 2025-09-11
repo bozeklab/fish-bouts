@@ -4,11 +4,6 @@ import h5py
 import os
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-<<<<<<< HEAD
-=======
-import yaml
-from utils import compute_statistics
->>>>>>> aa0056c43c80db217ffa744facf27b3633031474
 
 
 def make_sliding_windows(data, window_size):

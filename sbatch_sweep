@@ -12,5 +12,4 @@
 ### begin of executable commands
 source zeb/bin/activate
 
-### wandb agent bozek-lab/klyczek/v2sjwrri
 wandb agent bozek-lab/klyczek/89b8ccr2

@@ -25,7 +25,7 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 
-class FishBoutDecoder(nn.Module):
+class TransformerDecoder(nn.Module):
     """
     GPT-style causal model for next-bout prediction.
 

@@ -2,14 +2,14 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
-def apply_mask(x, mask_type='last', mask_ratio=0.3, if_print=False):
+def apply_mask(x, mask_type, mask_ratio):
     """
-    Apply masking to the input sequence.
+    Apply zero masking to the input sequence.
 
     Args:
-        x (Tensor): Input tensor of shape (B, T, D)
-        mask_type (str): 'random' or 'last_k'
-        mask_ratio (float): Fraction of positions to mask
+        x (Tensor): input tensor of shape (B, T, D)
+        mask_type (str): 'random' or 'last'
+        mask_ratio (float): fraction of positions to mask
 
     Returns:
         x_masked (Tensor): Masked input
@@ -28,8 +28,6 @@ def apply_mask(x, mask_type='last', mask_ratio=0.3, if_print=False):
             mask[i, mask_idx] = True
 
     elif mask_type == 'last':
-        # if if_print:
-        #     print(f"{x_masked[:, -num_mask:]=}")
         x_masked[:, -num_mask:] = 0.0
         mask[:, -num_mask:] = True
     else:

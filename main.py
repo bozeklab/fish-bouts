@@ -86,7 +86,7 @@ val_loader   = DataLoader(TensorDataset(val_data),   batch_size=config["training
 test_loader  = DataLoader(TensorDataset(test_data),  batch_size=config["training"]["batch_size"], shuffle=False)
 
 
-lr = float(wandb.config["training.lr"])  # ensure float
+lr = float(wandb.config["training"]["lr"])  # ensure float
 print(f"Using learning rate: {lr}")
 
 model = TransformerEncoder(

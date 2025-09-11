@@ -45,7 +45,7 @@ def train_model(config,
             x = batch[0].to(device)
             # print(f"{x.shape=}")
             # print(f"{x=}")
-            x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, if_print=True)
+            x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio)
             x_masked = x_masked.to(device)
             mask = mask.to(device)
             # print(f"{x_masked.shape=}")
@@ -116,7 +116,7 @@ def train_model(config,
             for batch in val_loader:
                 x = batch[0].to(device)
 
-                x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, if_print=False)
+                x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio)
                 x_masked = x_masked.to(device)
                 mask = mask.to(device)
                 output = model(src=x_masked, mask_positions=mask)

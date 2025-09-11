@@ -22,7 +22,6 @@ training:
 masking:
   type: random
   percentage: 0.1
-  learnable_mask_embedding: False
 
 data:
   process_data_first: true
