@@ -56,6 +56,7 @@ def train_model(config,
             # print(f"{output=}")
             # Loss only at masked positions
             loss = criterion(output[mask], x[mask])
+            # print(f"{loss=}")
 
             optimizer.zero_grad()
             loss.backward()

@@ -1,0 +1,1721 @@
+wandb: Starting wandb agent 🕵️
+2025-08-29 15:53:18,341 - wandb.wandb_agent - INFO - Running runs: []
+2025-08-29 15:53:18,834 - wandb.wandb_agent - INFO - Agent received command: run
+2025-08-29 15:53:18,834 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 256
+	model.num_layers: 4
+	training.batch_size: 64
+	training.lr: 1e-5
+	training.optimizer: adam
+2025-08-29 15:53:18,838 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=256 --model.num_layers=4 --training.batch_size=64 --training.lr=1e-5 --training.optimizer=adam
+2025-08-29 15:53:23,851 - wandb.wandb_agent - INFO - Running runs: ['u9ca8sbm']
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250829_155325-u9ca8sbm
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run sage-sweep-3821
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/u9ca8sbm
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+wandb: uploading fish_bout_transformer.pth
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▃▃▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇▇▇█
+wandb: train_loss █▇▅▄▄▃▃▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▂▁▁▂▂▁▁▁▁▁▁▁▁▁
+wandb:   val_loss █▇▇▆▄▅▄▄▃▄▄▃▂▃▃▂▂▂▂▂▃▂▂▃▂▃▂▁▂▁▂▂▂▂▂▁▂▂▂▂
+wandb: 
+wandb: Run summary:
+wandb:      epoch 116
+wandb: train_loss 8.09809
+wandb:   val_loss 8.36995
+wandb: 
+wandb: 🚀 View run sage-sweep-3821 at: https://wandb.ai/bozek-lab/klyczek/runs/u9ca8sbm
+wandb: ⭐️ View project at: https://wandb.ai/bozek-lab/klyczek
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250829_155325-u9ca8sbm/logs
+{'model': {'dropout': 0, 'nhead': 4, 'num_layers': 4, 'd_model': 16, 'dim_feedforward': 64}, 'training': {'batch_size': 64, 'lr': '1e-3', 'epochs': 5000, 'optimizer': 'adam', 'loss': 'mse', 'train_fraction': 0.7, 'val_fraction': 0.15, 'early_stopping': {'enabled': True, 'patience': 20, 'delta': '1e-4'}}, 'masking': {'type': 'random', 'percentage': 0.1}, 'data': {'conditions_path': 'sensory_contexts_data.npy', 'processed_dir': 'processed_data', 'input_dim': 20, 'sequence_length': 5, 'raw_path': 'Datasets/JM_data/pool_ex8_PCs.h5'}, 'seed': 42, 'model.d_model': 256, 'model.num_layers': 4, 'training.batch_size': 64, 'training.lr': '1e-5', 'training.optimizer': 'adam'}
+Using device: cuda
+Total fish: 463, PCA shape: (463, 11651, 20), Nonzero mask shape: (463, 11651)
+Conditions index shape: (463,)
+Train size: 324, Val+Test size: 139
+Validation size: 69, Test size: 70
+Validation: [136 196 304  69 382  42 340 194 172 375 139 257 294  18 433  39 327   3
+  64 175 162  97  55 190   0  73 460 420 189 315  90 402 211 451 323 431
+ 287 445 128 400 339   9  70 225 380 260  48  60 394 215 258 143  92 275
+ 123  36 351 388 286 459 229 145 120 203 328 218 406 115 306], Test: [ 14 243 280 343 295 336  46  37  95 256 147  34 372 164 105 341 154  76
+ 171 193 408 246 165 414   8 305 106 373  11  30 335 111 198  85 387 319
+  51  63 245  57 363 163 357 170 457 224 418 269 118 446 401 422 272 192
+ 296 236 409 126 132 251  75 432 298 322 398 312 220 290 151 338]
+Filtered PCA shapes before sliding windowing: train=855666, val=168579, test=179164
+------------------------------------------------
+pca_train (855666, 20)
+pca_val (168579, 20)
+pca_test (179164, 20)
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Sliding window shapes: train=(855662, 5, 20), val=(168575, 5, 20), test=(179160, 5, 20)
+used for normalization Mean: -0.020540177822113037, Std: 2.958566427230835
+computing statistics of normalized data...
+Computing statistics...
+data shape (855666, 20)
+Mean: [-0.23200016 -0.09907612 -0.00295992 -0.06568918  0.04590619  0.00567815
+ -0.03474114  0.03558569 -0.03564373  0.01902646  0.00099173 -0.05185678
+  0.0052082   0.01394337 -0.01173412 -0.01064747  0.01432809 -0.00253002
+ -0.00335769 -0.00123489]
+Std: [10.038458    5.496974    3.897122    2.8285718   2.2303479   1.8786765
+  1.4661893   1.2725794   1.1405882   1.0457467   0.9947754   0.89248496
+  0.8747207   0.8315738   0.7977842   0.7272971   0.67204624  0.65969485
+  0.61814487  0.585693  ]
+Min: [-43.64716  -21.541899 -23.157005 -31.334883 -25.56383  -21.92232
+ -24.143694 -22.363401 -26.16261  -16.465778 -23.70673  -18.04575
+ -15.623499 -12.573859 -15.557911 -19.924786 -12.032966 -17.378014
+ -14.739848 -12.859519]
+Max: [41.182434 24.70979  26.262136 31.009045 26.294428 22.97691  28.348349
+ 20.850065 23.674097 17.012926 22.952692 21.350965 11.419177 13.425751
+ 21.698322 18.035275 14.125225 18.658062 19.302763 11.227902]
+Using learning rate: 0.001
+FishBoutEncoder(
+  (input_proj): Linear(in_features=20, out_features=16, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=16, out_features=16, bias=True)
+        )
+        (linear1): Linear(in_features=16, out_features=64, bias=True)
+        (dropout): Dropout(p=0, inplace=False)
+        (linear2): Linear(in_features=64, out_features=16, bias=True)
+        (norm1): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0, inplace=False)
+        (dropout2): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (output): Linear(in_features=16, out_features=20, bias=True)
+)
+Starting training...
+Epoch 1 | Train Loss: 8.6205 | Val Loss: 8.7964
+Validation loss improved. Model saved to best_model_0.pth
+Epoch 2 | Train Loss: 8.5440 | Val Loss: 8.7277
+Validation loss improved. Model saved to best_model_1.pth
+Epoch 3 | Train Loss: 8.4908 | Val Loss: 8.7197
+Validation loss improved. Model saved to best_model_2.pth
+Epoch 4 | Train Loss: 8.4571 | Val Loss: 8.6423
+Validation loss improved. Model saved to best_model_3.pth
+Epoch 5 | Train Loss: 8.4122 | Val Loss: 8.5862
+Validation loss improved. Model saved to best_model_4.pth
+Epoch 6 | Train Loss: 8.3833 | Val Loss: 8.5527
+Validation loss improved. Model saved to best_model_5.pth
+Epoch 7 | Train Loss: 8.3475 | Val Loss: 8.5606
+No improvement. Early stopping patience 1/20
+Epoch 8 | Train Loss: 8.3324 | Val Loss: 8.5808
+No improvement. Early stopping patience 2/20
+Epoch 9 | Train Loss: 8.2949 | Val Loss: 8.5447
+Validation loss improved. Model saved to best_model_8.pth
+Epoch 10 | Train Loss: 8.2910 | Val Loss: 8.5245
+Validation loss improved. Model saved to best_model_9.pth
+Epoch 11 | Train Loss: 8.2923 | Val Loss: 8.4561
+Validation loss improved. Model saved to best_model_10.pth
+Epoch 12 | Train Loss: 8.2583 | Val Loss: 8.4946
+No improvement. Early stopping patience 1/20
+Epoch 13 | Train Loss: 8.2606 | Val Loss: 8.5094
+No improvement. Early stopping patience 2/20
+Epoch 14 | Train Loss: 8.2535 | Val Loss: 8.4829
+No improvement. Early stopping patience 3/20
+Epoch 15 | Train Loss: 8.2243 | Val Loss: 8.4626
+No improvement. Early stopping patience 4/20
+Epoch 16 | Train Loss: 8.2480 | Val Loss: 8.4991
+No improvement. Early stopping patience 5/20
+Epoch 17 | Train Loss: 8.2459 | Val Loss: 8.4310
+Validation loss improved. Model saved to best_model_16.pth
+Epoch 18 | Train Loss: 8.2242 | Val Loss: 8.4867
+No improvement. Early stopping patience 1/20
+Epoch 19 | Train Loss: 8.2148 | Val Loss: 8.4399
+No improvement. Early stopping patience 2/20
+Epoch 20 | Train Loss: 8.2170 | Val Loss: 8.4626
+No improvement. Early stopping patience 3/20
+Epoch 21 | Train Loss: 8.2176 | Val Loss: 8.4840
+No improvement. Early stopping patience 4/20
+Epoch 22 | Train Loss: 8.2046 | Val Loss: 8.4476
+No improvement. Early stopping patience 5/20
+Epoch 23 | Train Loss: 8.2007 | Val Loss: 8.4445
+No improvement. Early stopping patience 6/20
+Epoch 24 | Train Loss: 8.1978 | Val Loss: 8.4000
+Validation loss improved. Model saved to best_model_23.pth
+Epoch 25 | Train Loss: 8.2100 | Val Loss: 8.4464
+No improvement. Early stopping patience 1/20
+Epoch 26 | Train Loss: 8.1909 | Val Loss: 8.4232
+No improvement. Early stopping patience 2/20
+Epoch 27 | Train Loss: 8.1997 | Val Loss: 8.4398
+No improvement. Early stopping patience 3/20
+Epoch 28 | Train Loss: 8.1815 | Val Loss: 8.4370
+No improvement. Early stopping patience 4/20
+Epoch 29 | Train Loss: 8.1896 | Val Loss: 8.4901
+No improvement. Early stopping patience 5/20
+Epoch 30 | Train Loss: 8.1810 | Val Loss: 8.4796
+No improvement. Early stopping patience 6/20
+Epoch 31 | Train Loss: 8.1850 | Val Loss: 8.4027
+No improvement. Early stopping patience 7/20
+Epoch 32 | Train Loss: 8.1893 | Val Loss: 8.4355
+No improvement. Early stopping patience 8/20
+Epoch 33 | Train Loss: 8.1831 | Val Loss: 8.4274
+No improvement. Early stopping patience 9/20
+Epoch 34 | Train Loss: 8.1772 | Val Loss: 8.3968
+Validation loss improved. Model saved to best_model_33.pth
+Epoch 35 | Train Loss: 8.1744 | Val Loss: 8.4576
+No improvement. Early stopping patience 1/20
+Epoch 36 | Train Loss: 8.1709 | Val Loss: 8.4271
+No improvement. Early stopping patience 2/20
+Epoch 37 | Train Loss: 8.1741 | Val Loss: 8.4161
+No improvement. Early stopping patience 3/20
+Epoch 38 | Train Loss: 8.1783 | Val Loss: 8.3954
+Validation loss improved. Model saved to best_model_37.pth
+Epoch 39 | Train Loss: 8.1666 | Val Loss: 8.4267
+No improvement. Early stopping patience 1/20
+Epoch 40 | Train Loss: 8.1744 | Val Loss: 8.4082
+No improvement. Early stopping patience 2/20
+Epoch 41 | Train Loss: 8.1711 | Val Loss: 8.4197
+No improvement. Early stopping patience 3/20
+Epoch 42 | Train Loss: 8.1579 | Val Loss: 8.4426
+No improvement. Early stopping patience 4/20
+Epoch 43 | Train Loss: 8.1597 | Val Loss: 8.4673
+No improvement. Early stopping patience 5/20
+Epoch 44 | Train Loss: 8.1686 | Val Loss: 8.3915
+Validation loss improved. Model saved to best_model_43.pth
+Epoch 45 | Train Loss: 8.1729 | Val Loss: 8.3921
+No improvement. Early stopping patience 1/20
+Epoch 46 | Train Loss: 8.1651 | Val Loss: 8.4061
+No improvement. Early stopping patience 2/20
+Epoch 47 | Train Loss: 8.1707 | Val Loss: 8.3997
+No improvement. Early stopping patience 3/20
+Epoch 48 | Train Loss: 8.1516 | Val Loss: 8.4357
+No improvement. Early stopping patience 4/20
+Epoch 49 | Train Loss: 8.1573 | Val Loss: 8.4788
+No improvement. Early stopping patience 5/20
+Epoch 50 | Train Loss: 8.1514 | Val Loss: 8.3913
+Validation loss improved. Model saved to best_model_49.pth
+Epoch 51 | Train Loss: 8.1611 | Val Loss: 8.4473
+No improvement. Early stopping patience 1/20
+Epoch 52 | Train Loss: 8.1498 | Val Loss: 8.4239
+No improvement. Early stopping patience 2/20
+Epoch 53 | Train Loss: 8.1585 | Val Loss: 8.3881
+Validation loss improved. Model saved to best_model_52.pth
+Epoch 54 | Train Loss: 8.1572 | Val Loss: 8.4331
+No improvement. Early stopping patience 1/20
+Epoch 55 | Train Loss: 8.1418 | Val Loss: 8.3969
+No improvement. Early stopping patience 2/20
+Epoch 56 | Train Loss: 8.1420 | Val Loss: 8.3444
+Validation loss improved. Model saved to best_model_55.pth
+Epoch 57 | Train Loss: 8.1428 | Val Loss: 8.4433
+No improvement. Early stopping patience 1/20
+Epoch 58 | Train Loss: 8.1472 | Val Loss: 8.3956
+No improvement. Early stopping patience 2/20
+Epoch 59 | Train Loss: 8.1576 | Val Loss: 8.4384
+No improvement. Early stopping patience 3/20
+Epoch 60 | Train Loss: 8.1634 | Val Loss: 8.3836
+No improvement. Early stopping patience 4/20
+Epoch 61 | Train Loss: 8.1441 | Val Loss: 8.4065
+No improvement. Early stopping patience 5/20
+Epoch 62 | Train Loss: 8.1312 | Val Loss: 8.4509
+No improvement. Early stopping patience 6/20
+Epoch 63 | Train Loss: 8.1488 | Val Loss: 8.4317
+No improvement. Early stopping patience 7/20
+Epoch 64 | Train Loss: 8.1464 | Val Loss: 8.3426
+Validation loss improved. Model saved to best_model_63.pth
+Epoch 65 | Train Loss: 8.1486 | Val Loss: 8.3946
+No improvement. Early stopping patience 1/20
+Epoch 66 | Train Loss: 8.1391 | Val Loss: 8.4087
+No improvement. Early stopping patience 2/20
+Epoch 67 | Train Loss: 8.1372 | Val Loss: 8.3810
+No improvement. Early stopping patience 3/20
+Epoch 68 | Train Loss: 8.1447 | Val Loss: 8.4538
+No improvement. Early stopping patience 4/20
+Epoch 69 | Train Loss: 8.1369 | Val Loss: 8.3583
+No improvement. Early stopping patience 5/20
+Epoch 70 | Train Loss: 8.1304 | Val Loss: 8.4063
+No improvement. Early stopping patience 6/20
+Epoch 71 | Train Loss: 8.1246 | Val Loss: 8.3789
+No improvement. Early stopping patience 7/20
+Epoch 72 | Train Loss: 8.1230 | Val Loss: 8.3547
+No improvement. Early stopping patience 8/20
+Epoch 73 | Train Loss: 8.1382 | Val Loss: 8.3935
+No improvement. Early stopping patience 9/20
+Epoch 74 | Train Loss: 8.1329 | Val Loss: 8.3400
+Validation loss improved. Model saved to best_model_73.pth
+Epoch 75 | Train Loss: 8.1406 | Val Loss: 8.4101
+No improvement. Early stopping patience 1/20
+Epoch 76 | Train Loss: 8.1225 | Val Loss: 8.3536
+No improvement. Early stopping patience 2/20
+Epoch 77 | Train Loss: 8.1280 | Val Loss: 8.4427
+No improvement. Early stopping patience 3/20
+Epoch 78 | Train Loss: 8.1220 | Val Loss: 8.4247
+No improvement. Early stopping patience 4/20
+Epoch 79 | Train Loss: 8.1274 | Val Loss: 8.4020
+No improvement. Early stopping patience 5/20
+Epoch 80 | Train Loss: 8.1126 | Val Loss: 8.4019
+No improvement. Early stopping patience 6/20
+Epoch 81 | Train Loss: 8.1166 | Val Loss: 8.4408
+No improvement. Early stopping patience 7/20
+Epoch 82 | Train Loss: 8.1166 | Val Loss: 8.3877
+No improvement. Early stopping patience 8/20
+Epoch 83 | Train Loss: 8.1090 | Val Loss: 8.3825
+No improvement. Early stopping patience 9/20
+Epoch 84 | Train Loss: 8.1188 | Val Loss: 8.3683
+No improvement. Early stopping patience 10/20
+Epoch 85 | Train Loss: 8.1152 | Val Loss: 8.3354
+Validation loss improved. Model saved to best_model_84.pth
+Epoch 86 | Train Loss: 8.1138 | Val Loss: 8.3944
+No improvement. Early stopping patience 1/20
+Epoch 87 | Train Loss: 8.1230 | Val Loss: 8.3780
+No improvement. Early stopping patience 2/20
+Epoch 88 | Train Loss: 8.1243 | Val Loss: 8.3825
+No improvement. Early stopping patience 3/20
+Epoch 89 | Train Loss: 8.1141 | Val Loss: 8.4429
+No improvement. Early stopping patience 4/20
+Epoch 90 | Train Loss: 8.1273 | Val Loss: 8.3699
+No improvement. Early stopping patience 5/20
+Epoch 91 | Train Loss: 8.1018 | Val Loss: 8.4011
+No improvement. Early stopping patience 6/20
+Epoch 92 | Train Loss: 8.1128 | Val Loss: 8.3517
+No improvement. Early stopping patience 7/20
+Epoch 93 | Train Loss: 8.1236 | Val Loss: 8.4132
+No improvement. Early stopping patience 8/20
+Epoch 94 | Train Loss: 8.1035 | Val Loss: 8.3752
+No improvement. Early stopping patience 9/20
+Epoch 95 | Train Loss: 8.1258 | Val Loss: 8.4244
+No improvement. Early stopping patience 10/20
+Epoch 96 | Train Loss: 8.1284 | Val Loss: 8.3286
+Validation loss improved. Model saved to best_model_95.pth
+Epoch 97 | Train Loss: 8.1207 | Val Loss: 8.3663
+No improvement. Early stopping patience 1/20
+Epoch 98 | Train Loss: 8.1208 | Val Loss: 8.3923
+No improvement. Early stopping patience 2/20
+Epoch 99 | Train Loss: 8.1050 | Val Loss: 8.3678
+No improvement. Early stopping patience 3/20
+Epoch 100 | Train Loss: 8.1148 | Val Loss: 8.4117
+No improvement. Early stopping patience 4/20
+Epoch 101 | Train Loss: 8.1090 | Val Loss: 8.3725
+No improvement. Early stopping patience 5/20
+Epoch 102 | Train Loss: 8.1129 | Val Loss: 8.3315
+No improvement. Early stopping patience 6/20
+Epoch 103 | Train Loss: 8.1075 | Val Loss: 8.4284
+No improvement. Early stopping patience 7/20
+Epoch 104 | Train Loss: 8.1027 | Val Loss: 8.3727
+No improvement. Early stopping patience 8/20
+Epoch 105 | Train Loss: 8.1241 | Val Loss: 8.3385
+No improvement. Early stopping patience 9/20
+Epoch 106 | Train Loss: 8.1117 | Val Loss: 8.3922
+No improvement. Early stopping patience 10/20
+Epoch 107 | Train Loss: 8.1016 | Val Loss: 8.3871
+No improvement. Early stopping patience 11/20
+Epoch 108 | Train Loss: 8.0948 | Val Loss: 8.3352
+No improvement. Early stopping patience 12/20
+Epoch 109 | Train Loss: 8.1057 | Val Loss: 8.3859
+No improvement. Early stopping patience 13/20
+Epoch 110 | Train Loss: 8.0978 | Val Loss: 8.3655
+No improvement. Early stopping patience 14/20
+Epoch 111 | Train Loss: 8.1174 | Val Loss: 8.3774
+No improvement. Early stopping patience 15/20
+Epoch 112 | Train Loss: 8.1231 | Val Loss: 8.4102
+No improvement. Early stopping patience 16/20
+Epoch 113 | Train Loss: 8.1033 | Val Loss: 8.3668
+No improvement. Early stopping patience 17/20
+Epoch 114 | Train Loss: 8.1034 | Val Loss: 8.4142
+No improvement. Early stopping patience 18/20
+Epoch 115 | Train Loss: 8.1102 | Val Loss: 8.3727
+No improvement. Early stopping patience 19/20
+Epoch 116 | Train Loss: 8.0981 | Val Loss: 8.3700
+No improvement. Early stopping patience 20/20
+Early stopping triggered!
+Training complete.
+Model saved to fish_bout_transformer.pth
+2025-08-30 05:32:21,611 - wandb.wandb_agent - INFO - Cleaning up finished run: u9ca8sbm
+2025-08-30 05:32:23,043 - wandb.wandb_agent - INFO - Agent received command: run
+2025-08-30 05:32:23,043 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 256
+	model.num_layers: 1
+	training.batch_size: 256
+	training.lr: 1e-5
+	training.optimizer: adam
+2025-08-30 05:32:23,047 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=256 --model.num_layers=1 --training.batch_size=256 --training.lr=1e-5 --training.optimizer=adam
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+2025-08-30 05:32:28,061 - wandb.wandb_agent - INFO - Running runs: ['rg8s6f2t']
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250830_053227-rg8s6f2t
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run twilight-sweep-3824
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/rg8s6f2t
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+wandb: uploading fish_bout_transformer.pth
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▂▂▂▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▆▆▇▇▇▇▇▇█████
+wandb: train_loss █▆▅▄▄▃▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:   val_loss ██▇▆▄▄▃▃▃▃▄▂▃▂▃▃▂▃▂▂▂▃▂▂▁▃▂▂▂▃▁▂▂▁▂▂▂▂▂▂
+wandb: 
+wandb: Run summary:
+wandb:      epoch 116
+wandb: train_loss 8.09809
+wandb:   val_loss 8.36995
+wandb: 
+wandb: 🚀 View run twilight-sweep-3824 at: https://wandb.ai/bozek-lab/klyczek/runs/rg8s6f2t
+wandb: ⭐️ View project at: https://wandb.ai/bozek-lab/klyczek
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250830_053227-rg8s6f2t/logs
+{'model': {'nhead': 4, 'num_layers': 4, 'd_model': 16, 'dim_feedforward': 64, 'dropout': 0}, 'training': {'lr': '1e-3', 'epochs': 5000, 'optimizer': 'adam', 'loss': 'mse', 'train_fraction': 0.7, 'val_fraction': 0.15, 'early_stopping': {'delta': '1e-4', 'enabled': True, 'patience': 20}, 'batch_size': 64}, 'masking': {'percentage': 0.1, 'type': 'random'}, 'data': {'input_dim': 20, 'sequence_length': 5, 'raw_path': 'Datasets/JM_data/pool_ex8_PCs.h5', 'conditions_path': 'sensory_contexts_data.npy', 'processed_dir': 'processed_data'}, 'seed': 42, 'model.d_model': 256, 'model.num_layers': 1, 'training.batch_size': 256, 'training.lr': '1e-5', 'training.optimizer': 'adam'}
+Using device: cuda
+Total fish: 463, PCA shape: (463, 11651, 20), Nonzero mask shape: (463, 11651)
+Conditions index shape: (463,)
+Train size: 324, Val+Test size: 139
+Validation size: 69, Test size: 70
+Validation: [136 196 304  69 382  42 340 194 172 375 139 257 294  18 433  39 327   3
+  64 175 162  97  55 190   0  73 460 420 189 315  90 402 211 451 323 431
+ 287 445 128 400 339   9  70 225 380 260  48  60 394 215 258 143  92 275
+ 123  36 351 388 286 459 229 145 120 203 328 218 406 115 306], Test: [ 14 243 280 343 295 336  46  37  95 256 147  34 372 164 105 341 154  76
+ 171 193 408 246 165 414   8 305 106 373  11  30 335 111 198  85 387 319
+  51  63 245  57 363 163 357 170 457 224 418 269 118 446 401 422 272 192
+ 296 236 409 126 132 251  75 432 298 322 398 312 220 290 151 338]
+Filtered PCA shapes before sliding windowing: train=855666, val=168579, test=179164
+------------------------------------------------
+pca_train (855666, 20)
+pca_val (168579, 20)
+pca_test (179164, 20)
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Sliding window shapes: train=(855662, 5, 20), val=(168575, 5, 20), test=(179160, 5, 20)
+Used for normalization Mean: -0.020540177822113037, Std: 2.958566427230835
+computing statistics of normalized data...
+Computing statistics...
+data shape (855666, 20)
+Mean: [-0.07147445 -0.02654471  0.00594199 -0.01526083  0.02245913  0.00886189
+ -0.00480005  0.01897094 -0.00510478  0.01337345  0.00727783 -0.0105848
+  0.008703    0.01165554  0.00297649  0.00334368  0.01178533  0.00608745
+  0.00580774  0.00652527]
+Std: [3.3930488  1.8579689  1.3172467  0.95604557 0.7538536  0.6349819
+ 0.49556956 0.43013024 0.3855307  0.3534618  0.3362313  0.30166525
+ 0.29565826 0.2810776  0.26965678 0.24582428 0.22715306 0.222977
+ 0.20893516 0.19797136]
+Min: [-14.745865   -7.2742524  -7.820161  -10.584296   -8.633671   -7.402835
+  -8.153663   -7.5519214  -8.83606    -5.5585155  -8.005968   -6.0925484
+  -5.273824   -4.243041   -5.251655   -6.7276654  -4.0602183  -5.8668528
+  -4.9751487  -4.3395944]
+Max: [13.926668   8.35889    8.883585  10.488048   8.8945     7.7731733
+  9.588728   7.0542965  8.008823   5.7573376  7.764988   7.223602
+  3.866642   4.544867   7.341009   6.1028934  4.7812905  6.3133965
+  6.5313063  3.801991 ]
+Using learning rate: 0.001
+FishBoutEncoder(
+  (input_proj): Linear(in_features=20, out_features=16, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=16, out_features=16, bias=True)
+        )
+        (linear1): Linear(in_features=16, out_features=64, bias=True)
+        (dropout): Dropout(p=0, inplace=False)
+        (linear2): Linear(in_features=64, out_features=16, bias=True)
+        (norm1): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0, inplace=False)
+        (dropout2): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (output): Linear(in_features=16, out_features=20, bias=True)
+)
+Starting training...
+Epoch 1 | Train Loss: 8.6205 | Val Loss: 8.7964
+Validation loss improved. Model saved to best_model_0.pth
+Epoch 2 | Train Loss: 8.5440 | Val Loss: 8.7277
+Validation loss improved. Model saved to best_model_1.pth
+Epoch 3 | Train Loss: 8.4908 | Val Loss: 8.7197
+Validation loss improved. Model saved to best_model_2.pth
+Epoch 4 | Train Loss: 8.4571 | Val Loss: 8.6423
+Validation loss improved. Model saved to best_model_3.pth
+Epoch 5 | Train Loss: 8.4122 | Val Loss: 8.5862
+Validation loss improved. Model saved to best_model_4.pth
+Epoch 6 | Train Loss: 8.3833 | Val Loss: 8.5527
+Validation loss improved. Model saved to best_model_5.pth
+Epoch 7 | Train Loss: 8.3475 | Val Loss: 8.5606
+No improvement. Early stopping patience 1/20
+Epoch 8 | Train Loss: 8.3324 | Val Loss: 8.5808
+No improvement. Early stopping patience 2/20
+Epoch 9 | Train Loss: 8.2949 | Val Loss: 8.5447
+Validation loss improved. Model saved to best_model_8.pth
+Epoch 10 | Train Loss: 8.2910 | Val Loss: 8.5245
+Validation loss improved. Model saved to best_model_9.pth
+Epoch 11 | Train Loss: 8.2923 | Val Loss: 8.4561
+Validation loss improved. Model saved to best_model_10.pth
+Epoch 12 | Train Loss: 8.2583 | Val Loss: 8.4946
+No improvement. Early stopping patience 1/20
+Epoch 13 | Train Loss: 8.2606 | Val Loss: 8.5094
+No improvement. Early stopping patience 2/20
+Epoch 14 | Train Loss: 8.2535 | Val Loss: 8.4829
+No improvement. Early stopping patience 3/20
+Epoch 15 | Train Loss: 8.2243 | Val Loss: 8.4626
+No improvement. Early stopping patience 4/20
+Epoch 16 | Train Loss: 8.2480 | Val Loss: 8.4991
+No improvement. Early stopping patience 5/20
+Epoch 17 | Train Loss: 8.2459 | Val Loss: 8.4310
+Validation loss improved. Model saved to best_model_16.pth
+Epoch 18 | Train Loss: 8.2242 | Val Loss: 8.4867
+No improvement. Early stopping patience 1/20
+Epoch 19 | Train Loss: 8.2148 | Val Loss: 8.4399
+No improvement. Early stopping patience 2/20
+Epoch 20 | Train Loss: 8.2170 | Val Loss: 8.4626
+No improvement. Early stopping patience 3/20
+Epoch 21 | Train Loss: 8.2176 | Val Loss: 8.4840
+No improvement. Early stopping patience 4/20
+Epoch 22 | Train Loss: 8.2046 | Val Loss: 8.4476
+No improvement. Early stopping patience 5/20
+Epoch 23 | Train Loss: 8.2007 | Val Loss: 8.4445
+No improvement. Early stopping patience 6/20
+Epoch 24 | Train Loss: 8.1978 | Val Loss: 8.4000
+Validation loss improved. Model saved to best_model_23.pth
+Epoch 25 | Train Loss: 8.2100 | Val Loss: 8.4464
+No improvement. Early stopping patience 1/20
+Epoch 26 | Train Loss: 8.1909 | Val Loss: 8.4232
+No improvement. Early stopping patience 2/20
+Epoch 27 | Train Loss: 8.1997 | Val Loss: 8.4398
+No improvement. Early stopping patience 3/20
+Epoch 28 | Train Loss: 8.1815 | Val Loss: 8.4370
+No improvement. Early stopping patience 4/20
+Epoch 29 | Train Loss: 8.1896 | Val Loss: 8.4901
+No improvement. Early stopping patience 5/20
+Epoch 30 | Train Loss: 8.1810 | Val Loss: 8.4796
+No improvement. Early stopping patience 6/20
+Epoch 31 | Train Loss: 8.1850 | Val Loss: 8.4027
+No improvement. Early stopping patience 7/20
+Epoch 32 | Train Loss: 8.1893 | Val Loss: 8.4355
+No improvement. Early stopping patience 8/20
+Epoch 33 | Train Loss: 8.1831 | Val Loss: 8.4274
+No improvement. Early stopping patience 9/20
+Epoch 34 | Train Loss: 8.1772 | Val Loss: 8.3968
+Validation loss improved. Model saved to best_model_33.pth
+Epoch 35 | Train Loss: 8.1744 | Val Loss: 8.4576
+No improvement. Early stopping patience 1/20
+Epoch 36 | Train Loss: 8.1709 | Val Loss: 8.4271
+No improvement. Early stopping patience 2/20
+Epoch 37 | Train Loss: 8.1741 | Val Loss: 8.4161
+No improvement. Early stopping patience 3/20
+Epoch 38 | Train Loss: 8.1783 | Val Loss: 8.3954
+Validation loss improved. Model saved to best_model_37.pth
+Epoch 39 | Train Loss: 8.1666 | Val Loss: 8.4267
+No improvement. Early stopping patience 1/20
+Epoch 40 | Train Loss: 8.1744 | Val Loss: 8.4082
+No improvement. Early stopping patience 2/20
+Epoch 41 | Train Loss: 8.1711 | Val Loss: 8.4197
+No improvement. Early stopping patience 3/20
+Epoch 42 | Train Loss: 8.1579 | Val Loss: 8.4426
+No improvement. Early stopping patience 4/20
+Epoch 43 | Train Loss: 8.1597 | Val Loss: 8.4673
+No improvement. Early stopping patience 5/20
+Epoch 44 | Train Loss: 8.1686 | Val Loss: 8.3915
+Validation loss improved. Model saved to best_model_43.pth
+Epoch 45 | Train Loss: 8.1729 | Val Loss: 8.3921
+No improvement. Early stopping patience 1/20
+Epoch 46 | Train Loss: 8.1651 | Val Loss: 8.4061
+No improvement. Early stopping patience 2/20
+Epoch 47 | Train Loss: 8.1707 | Val Loss: 8.3997
+No improvement. Early stopping patience 3/20
+Epoch 48 | Train Loss: 8.1516 | Val Loss: 8.4357
+No improvement. Early stopping patience 4/20
+Epoch 49 | Train Loss: 8.1573 | Val Loss: 8.4788
+No improvement. Early stopping patience 5/20
+Epoch 50 | Train Loss: 8.1514 | Val Loss: 8.3913
+Validation loss improved. Model saved to best_model_49.pth
+Epoch 51 | Train Loss: 8.1611 | Val Loss: 8.4473
+No improvement. Early stopping patience 1/20
+Epoch 52 | Train Loss: 8.1498 | Val Loss: 8.4239
+No improvement. Early stopping patience 2/20
+Epoch 53 | Train Loss: 8.1585 | Val Loss: 8.3881
+Validation loss improved. Model saved to best_model_52.pth
+Epoch 54 | Train Loss: 8.1572 | Val Loss: 8.4331
+No improvement. Early stopping patience 1/20
+Epoch 55 | Train Loss: 8.1418 | Val Loss: 8.3969
+No improvement. Early stopping patience 2/20
+Epoch 56 | Train Loss: 8.1420 | Val Loss: 8.3444
+Validation loss improved. Model saved to best_model_55.pth
+Epoch 57 | Train Loss: 8.1428 | Val Loss: 8.4433
+No improvement. Early stopping patience 1/20
+Epoch 58 | Train Loss: 8.1472 | Val Loss: 8.3956
+No improvement. Early stopping patience 2/20
+Epoch 59 | Train Loss: 8.1576 | Val Loss: 8.4384
+No improvement. Early stopping patience 3/20
+Epoch 60 | Train Loss: 8.1634 | Val Loss: 8.3836
+No improvement. Early stopping patience 4/20
+Epoch 61 | Train Loss: 8.1441 | Val Loss: 8.4065
+No improvement. Early stopping patience 5/20
+Epoch 62 | Train Loss: 8.1312 | Val Loss: 8.4509
+No improvement. Early stopping patience 6/20
+Epoch 63 | Train Loss: 8.1488 | Val Loss: 8.4317
+No improvement. Early stopping patience 7/20
+Epoch 64 | Train Loss: 8.1464 | Val Loss: 8.3426
+Validation loss improved. Model saved to best_model_63.pth
+Epoch 65 | Train Loss: 8.1486 | Val Loss: 8.3946
+No improvement. Early stopping patience 1/20
+Epoch 66 | Train Loss: 8.1391 | Val Loss: 8.4087
+No improvement. Early stopping patience 2/20
+Epoch 67 | Train Loss: 8.1372 | Val Loss: 8.3810
+No improvement. Early stopping patience 3/20
+Epoch 68 | Train Loss: 8.1447 | Val Loss: 8.4538
+No improvement. Early stopping patience 4/20
+Epoch 69 | Train Loss: 8.1369 | Val Loss: 8.3583
+No improvement. Early stopping patience 5/20
+Epoch 70 | Train Loss: 8.1304 | Val Loss: 8.4063
+No improvement. Early stopping patience 6/20
+Epoch 71 | Train Loss: 8.1246 | Val Loss: 8.3789
+No improvement. Early stopping patience 7/20
+Epoch 72 | Train Loss: 8.1230 | Val Loss: 8.3547
+No improvement. Early stopping patience 8/20
+Epoch 73 | Train Loss: 8.1382 | Val Loss: 8.3935
+No improvement. Early stopping patience 9/20
+Epoch 74 | Train Loss: 8.1329 | Val Loss: 8.3400
+Validation loss improved. Model saved to best_model_73.pth
+Epoch 75 | Train Loss: 8.1406 | Val Loss: 8.4101
+No improvement. Early stopping patience 1/20
+Epoch 76 | Train Loss: 8.1225 | Val Loss: 8.3536
+No improvement. Early stopping patience 2/20
+Epoch 77 | Train Loss: 8.1280 | Val Loss: 8.4427
+No improvement. Early stopping patience 3/20
+Epoch 78 | Train Loss: 8.1220 | Val Loss: 8.4247
+No improvement. Early stopping patience 4/20
+Epoch 79 | Train Loss: 8.1274 | Val Loss: 8.4020
+No improvement. Early stopping patience 5/20
+Epoch 80 | Train Loss: 8.1126 | Val Loss: 8.4019
+No improvement. Early stopping patience 6/20
+Epoch 81 | Train Loss: 8.1166 | Val Loss: 8.4408
+No improvement. Early stopping patience 7/20
+Epoch 82 | Train Loss: 8.1166 | Val Loss: 8.3877
+No improvement. Early stopping patience 8/20
+Epoch 83 | Train Loss: 8.1090 | Val Loss: 8.3825
+No improvement. Early stopping patience 9/20
+Epoch 84 | Train Loss: 8.1188 | Val Loss: 8.3683
+No improvement. Early stopping patience 10/20
+Epoch 85 | Train Loss: 8.1152 | Val Loss: 8.3354
+Validation loss improved. Model saved to best_model_84.pth
+Epoch 86 | Train Loss: 8.1138 | Val Loss: 8.3944
+No improvement. Early stopping patience 1/20
+Epoch 87 | Train Loss: 8.1230 | Val Loss: 8.3780
+No improvement. Early stopping patience 2/20
+Epoch 88 | Train Loss: 8.1243 | Val Loss: 8.3825
+No improvement. Early stopping patience 3/20
+Epoch 89 | Train Loss: 8.1141 | Val Loss: 8.4429
+No improvement. Early stopping patience 4/20
+Epoch 90 | Train Loss: 8.1273 | Val Loss: 8.3699
+No improvement. Early stopping patience 5/20
+Epoch 91 | Train Loss: 8.1018 | Val Loss: 8.4011
+No improvement. Early stopping patience 6/20
+Epoch 92 | Train Loss: 8.1128 | Val Loss: 8.3517
+No improvement. Early stopping patience 7/20
+Epoch 93 | Train Loss: 8.1236 | Val Loss: 8.4132
+No improvement. Early stopping patience 8/20
+Epoch 94 | Train Loss: 8.1035 | Val Loss: 8.3752
+No improvement. Early stopping patience 9/20
+Epoch 95 | Train Loss: 8.1258 | Val Loss: 8.4244
+No improvement. Early stopping patience 10/20
+Epoch 96 | Train Loss: 8.1284 | Val Loss: 8.3286
+Validation loss improved. Model saved to best_model_95.pth
+Epoch 97 | Train Loss: 8.1207 | Val Loss: 8.3663
+No improvement. Early stopping patience 1/20
+Epoch 98 | Train Loss: 8.1208 | Val Loss: 8.3923
+No improvement. Early stopping patience 2/20
+Epoch 99 | Train Loss: 8.1050 | Val Loss: 8.3678
+No improvement. Early stopping patience 3/20
+Epoch 100 | Train Loss: 8.1148 | Val Loss: 8.4117
+No improvement. Early stopping patience 4/20
+Epoch 101 | Train Loss: 8.1090 | Val Loss: 8.3725
+No improvement. Early stopping patience 5/20
+Epoch 102 | Train Loss: 8.1129 | Val Loss: 8.3315
+No improvement. Early stopping patience 6/20
+Epoch 103 | Train Loss: 8.1075 | Val Loss: 8.4284
+No improvement. Early stopping patience 7/20
+Epoch 104 | Train Loss: 8.1027 | Val Loss: 8.3727
+No improvement. Early stopping patience 8/20
+Epoch 105 | Train Loss: 8.1241 | Val Loss: 8.3385
+No improvement. Early stopping patience 9/20
+Epoch 106 | Train Loss: 8.1117 | Val Loss: 8.3922
+No improvement. Early stopping patience 10/20
+Epoch 107 | Train Loss: 8.1016 | Val Loss: 8.3871
+No improvement. Early stopping patience 11/20
+Epoch 108 | Train Loss: 8.0948 | Val Loss: 8.3352
+No improvement. Early stopping patience 12/20
+Epoch 109 | Train Loss: 8.1057 | Val Loss: 8.3859
+No improvement. Early stopping patience 13/20
+Epoch 110 | Train Loss: 8.0978 | Val Loss: 8.3655
+No improvement. Early stopping patience 14/20
+Epoch 111 | Train Loss: 8.1174 | Val Loss: 8.3774
+No improvement. Early stopping patience 15/20
+Epoch 112 | Train Loss: 8.1231 | Val Loss: 8.4102
+No improvement. Early stopping patience 16/20
+Epoch 113 | Train Loss: 8.1033 | Val Loss: 8.3668
+No improvement. Early stopping patience 17/20
+Epoch 114 | Train Loss: 8.1034 | Val Loss: 8.4142
+No improvement. Early stopping patience 18/20
+Epoch 115 | Train Loss: 8.1102 | Val Loss: 8.3727
+No improvement. Early stopping patience 19/20
+Epoch 116 | Train Loss: 8.0981 | Val Loss: 8.3700
+No improvement. Early stopping patience 20/20
+Early stopping triggered!
+Training complete.
+Model saved to fish_bout_transformer.pth
+2025-08-30 18:58:59,378 - wandb.wandb_agent - INFO - Cleaning up finished run: rg8s6f2t
+2025-08-30 18:58:59,781 - wandb.wandb_agent - INFO - Agent received command: run
+2025-08-30 18:58:59,781 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 64
+	model.num_layers: 4
+	training.batch_size: 64
+	training.lr: 3e-6
+	training.optimizer: sgd
+2025-08-30 18:58:59,785 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=64 --model.num_layers=4 --training.batch_size=64 --training.lr=3e-6 --training.optimizer=sgd
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+2025-08-30 18:59:04,801 - wandb.wandb_agent - INFO - Running runs: ['ao3dyhjc']
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250830_185904-ao3dyhjc
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run zesty-sweep-3827
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/ao3dyhjc
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+wandb: uploading fish_bout_transformer.pth; uploading history steps 115-115, summary, console lines 299-303
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▂▂▂▂▂▂▂▃▃▃▄▄▄▄▅▅▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇████
+wandb: train_loss █▇▆▅▅▄▃▃▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:   val_loss ██▆▅▅▄▃▃▄▄▃▃▂▂▂▄▂▂▃▃▃▂▂▃▂▁▁▃▃▂▁▂▂▂▁▂▂▂▂▂
+wandb: 
+wandb: Run summary:
+wandb:      epoch 116
+wandb: train_loss 8.09809
+wandb:   val_loss 8.36995
+wandb: 
+wandb: 🚀 View run zesty-sweep-3827 at: https://wandb.ai/bozek-lab/klyczek/runs/ao3dyhjc
+wandb: ⭐️ View project at: https://wandb.ai/bozek-lab/klyczek
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250830_185904-ao3dyhjc/logs
+{'model': {'nhead': 4, 'num_layers': 4, 'd_model': 16, 'dim_feedforward': 64, 'dropout': 0}, 'training': {'train_fraction': 0.7, 'val_fraction': 0.15, 'early_stopping': {'patience': 20, 'delta': '1e-4', 'enabled': True}, 'batch_size': 64, 'lr': '1e-3', 'epochs': 5000, 'optimizer': 'adam', 'loss': 'mse'}, 'masking': {'type': 'random', 'percentage': 0.1}, 'data': {'input_dim': 20, 'sequence_length': 5, 'raw_path': 'Datasets/JM_data/pool_ex8_PCs.h5', 'conditions_path': 'sensory_contexts_data.npy', 'processed_dir': 'processed_data'}, 'seed': 42, 'model.d_model': 64, 'model.num_layers': 4, 'training.batch_size': 64, 'training.lr': '3e-6', 'training.optimizer': 'sgd'}
+Using device: cuda
+Total fish: 463, PCA shape: (463, 11651, 20), Nonzero mask shape: (463, 11651)
+Conditions index shape: (463,)
+Train size: 324, Val+Test size: 139
+Validation size: 69, Test size: 70
+Validation: [136 196 304  69 382  42 340 194 172 375 139 257 294  18 433  39 327   3
+  64 175 162  97  55 190   0  73 460 420 189 315  90 402 211 451 323 431
+ 287 445 128 400 339   9  70 225 380 260  48  60 394 215 258 143  92 275
+ 123  36 351 388 286 459 229 145 120 203 328 218 406 115 306], Test: [ 14 243 280 343 295 336  46  37  95 256 147  34 372 164 105 341 154  76
+ 171 193 408 246 165 414   8 305 106 373  11  30 335 111 198  85 387 319
+  51  63 245  57 363 163 357 170 457 224 418 269 118 446 401 422 272 192
+ 296 236 409 126 132 251  75 432 298 322 398 312 220 290 151 338]
+Filtered PCA shapes before sliding windowing: train=855666, val=168579, test=179164
+------------------------------------------------
+pca_train (855666, 20)
+pca_val (168579, 20)
+pca_test (179164, 20)
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Sliding window shapes: train=(855662, 5, 20), val=(168575, 5, 20), test=(179160, 5, 20)
+Used for normalization Mean: -0.020540177822113037, Std: 2.958566427230835
+computing statistics of normalized data...
+Computing statistics...
+data shape (855666, 20)
+Mean: [-0.07147445 -0.02654471  0.00594199 -0.01526083  0.02245913  0.00886189
+ -0.00480005  0.01897094 -0.00510478  0.01337345  0.00727783 -0.0105848
+  0.008703    0.01165554  0.00297649  0.00334368  0.01178533  0.00608745
+  0.00580774  0.00652527]
+Std: [3.3930488  1.8579689  1.3172467  0.95604557 0.7538536  0.6349819
+ 0.49556956 0.43013024 0.3855307  0.3534618  0.3362313  0.30166525
+ 0.29565826 0.2810776  0.26965678 0.24582428 0.22715306 0.222977
+ 0.20893516 0.19797136]
+Min: [-14.745865   -7.2742524  -7.820161  -10.584296   -8.633671   -7.402835
+  -8.153663   -7.5519214  -8.83606    -5.5585155  -8.005968   -6.0925484
+  -5.273824   -4.243041   -5.251655   -6.7276654  -4.0602183  -5.8668528
+  -4.9751487  -4.3395944]
+Max: [13.926668   8.35889    8.883585  10.488048   8.8945     7.7731733
+  9.588728   7.0542965  8.008823   5.7573376  7.764988   7.223602
+  3.866642   4.544867   7.341009   6.1028934  4.7812905  6.3133965
+  6.5313063  3.801991 ]
+Using learning rate: 0.001
+FishBoutEncoder(
+  (input_proj): Linear(in_features=20, out_features=16, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=16, out_features=16, bias=True)
+        )
+        (linear1): Linear(in_features=16, out_features=64, bias=True)
+        (dropout): Dropout(p=0, inplace=False)
+        (linear2): Linear(in_features=64, out_features=16, bias=True)
+        (norm1): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0, inplace=False)
+        (dropout2): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (output): Linear(in_features=16, out_features=20, bias=True)
+)
+Starting training...
+Epoch 1 | Train Loss: 8.6205 | Val Loss: 8.7964
+Validation loss improved. Model saved to best_model_0.pth
+Epoch 2 | Train Loss: 8.5440 | Val Loss: 8.7277
+Validation loss improved. Model saved to best_model_1.pth
+Epoch 3 | Train Loss: 8.4908 | Val Loss: 8.7197
+Validation loss improved. Model saved to best_model_2.pth
+Epoch 4 | Train Loss: 8.4571 | Val Loss: 8.6423
+Validation loss improved. Model saved to best_model_3.pth
+Epoch 5 | Train Loss: 8.4122 | Val Loss: 8.5862
+Validation loss improved. Model saved to best_model_4.pth
+Epoch 6 | Train Loss: 8.3833 | Val Loss: 8.5527
+Validation loss improved. Model saved to best_model_5.pth
+Epoch 7 | Train Loss: 8.3475 | Val Loss: 8.5606
+No improvement. Early stopping patience 1/20
+Epoch 8 | Train Loss: 8.3324 | Val Loss: 8.5808
+No improvement. Early stopping patience 2/20
+Epoch 9 | Train Loss: 8.2949 | Val Loss: 8.5447
+Validation loss improved. Model saved to best_model_8.pth
+Epoch 10 | Train Loss: 8.2910 | Val Loss: 8.5245
+Validation loss improved. Model saved to best_model_9.pth
+Epoch 11 | Train Loss: 8.2923 | Val Loss: 8.4561
+Validation loss improved. Model saved to best_model_10.pth
+Epoch 12 | Train Loss: 8.2583 | Val Loss: 8.4946
+No improvement. Early stopping patience 1/20
+Epoch 13 | Train Loss: 8.2606 | Val Loss: 8.5094
+No improvement. Early stopping patience 2/20
+Epoch 14 | Train Loss: 8.2535 | Val Loss: 8.4829
+No improvement. Early stopping patience 3/20
+Epoch 15 | Train Loss: 8.2243 | Val Loss: 8.4626
+No improvement. Early stopping patience 4/20
+Epoch 16 | Train Loss: 8.2480 | Val Loss: 8.4991
+No improvement. Early stopping patience 5/20
+Epoch 17 | Train Loss: 8.2459 | Val Loss: 8.4310
+Validation loss improved. Model saved to best_model_16.pth
+Epoch 18 | Train Loss: 8.2242 | Val Loss: 8.4867
+No improvement. Early stopping patience 1/20
+Epoch 19 | Train Loss: 8.2148 | Val Loss: 8.4399
+No improvement. Early stopping patience 2/20
+Epoch 20 | Train Loss: 8.2170 | Val Loss: 8.4626
+No improvement. Early stopping patience 3/20
+Epoch 21 | Train Loss: 8.2176 | Val Loss: 8.4840
+No improvement. Early stopping patience 4/20
+Epoch 22 | Train Loss: 8.2046 | Val Loss: 8.4476
+No improvement. Early stopping patience 5/20
+Epoch 23 | Train Loss: 8.2007 | Val Loss: 8.4445
+No improvement. Early stopping patience 6/20
+Epoch 24 | Train Loss: 8.1978 | Val Loss: 8.4000
+Validation loss improved. Model saved to best_model_23.pth
+Epoch 25 | Train Loss: 8.2100 | Val Loss: 8.4464
+No improvement. Early stopping patience 1/20
+Epoch 26 | Train Loss: 8.1909 | Val Loss: 8.4232
+No improvement. Early stopping patience 2/20
+Epoch 27 | Train Loss: 8.1997 | Val Loss: 8.4398
+No improvement. Early stopping patience 3/20
+Epoch 28 | Train Loss: 8.1815 | Val Loss: 8.4370
+No improvement. Early stopping patience 4/20
+Epoch 29 | Train Loss: 8.1896 | Val Loss: 8.4901
+No improvement. Early stopping patience 5/20
+Epoch 30 | Train Loss: 8.1810 | Val Loss: 8.4796
+No improvement. Early stopping patience 6/20
+Epoch 31 | Train Loss: 8.1850 | Val Loss: 8.4027
+No improvement. Early stopping patience 7/20
+Epoch 32 | Train Loss: 8.1893 | Val Loss: 8.4355
+No improvement. Early stopping patience 8/20
+Epoch 33 | Train Loss: 8.1831 | Val Loss: 8.4274
+No improvement. Early stopping patience 9/20
+Epoch 34 | Train Loss: 8.1772 | Val Loss: 8.3968
+Validation loss improved. Model saved to best_model_33.pth
+Epoch 35 | Train Loss: 8.1744 | Val Loss: 8.4576
+No improvement. Early stopping patience 1/20
+Epoch 36 | Train Loss: 8.1709 | Val Loss: 8.4271
+No improvement. Early stopping patience 2/20
+Epoch 37 | Train Loss: 8.1741 | Val Loss: 8.4161
+No improvement. Early stopping patience 3/20
+Epoch 38 | Train Loss: 8.1783 | Val Loss: 8.3954
+Validation loss improved. Model saved to best_model_37.pth
+Epoch 39 | Train Loss: 8.1666 | Val Loss: 8.4267
+No improvement. Early stopping patience 1/20
+Epoch 40 | Train Loss: 8.1744 | Val Loss: 8.4082
+No improvement. Early stopping patience 2/20
+Epoch 41 | Train Loss: 8.1711 | Val Loss: 8.4197
+No improvement. Early stopping patience 3/20
+Epoch 42 | Train Loss: 8.1579 | Val Loss: 8.4426
+No improvement. Early stopping patience 4/20
+Epoch 43 | Train Loss: 8.1597 | Val Loss: 8.4673
+No improvement. Early stopping patience 5/20
+Epoch 44 | Train Loss: 8.1686 | Val Loss: 8.3915
+Validation loss improved. Model saved to best_model_43.pth
+Epoch 45 | Train Loss: 8.1729 | Val Loss: 8.3921
+No improvement. Early stopping patience 1/20
+Epoch 46 | Train Loss: 8.1651 | Val Loss: 8.4061
+No improvement. Early stopping patience 2/20
+Epoch 47 | Train Loss: 8.1707 | Val Loss: 8.3997
+No improvement. Early stopping patience 3/20
+Epoch 48 | Train Loss: 8.1516 | Val Loss: 8.4357
+No improvement. Early stopping patience 4/20
+Epoch 49 | Train Loss: 8.1573 | Val Loss: 8.4788
+No improvement. Early stopping patience 5/20
+Epoch 50 | Train Loss: 8.1514 | Val Loss: 8.3913
+Validation loss improved. Model saved to best_model_49.pth
+Epoch 51 | Train Loss: 8.1611 | Val Loss: 8.4473
+No improvement. Early stopping patience 1/20
+Epoch 52 | Train Loss: 8.1498 | Val Loss: 8.4239
+No improvement. Early stopping patience 2/20
+Epoch 53 | Train Loss: 8.1585 | Val Loss: 8.3881
+Validation loss improved. Model saved to best_model_52.pth
+Epoch 54 | Train Loss: 8.1572 | Val Loss: 8.4331
+No improvement. Early stopping patience 1/20
+Epoch 55 | Train Loss: 8.1418 | Val Loss: 8.3969
+No improvement. Early stopping patience 2/20
+Epoch 56 | Train Loss: 8.1420 | Val Loss: 8.3444
+Validation loss improved. Model saved to best_model_55.pth
+Epoch 57 | Train Loss: 8.1428 | Val Loss: 8.4433
+No improvement. Early stopping patience 1/20
+Epoch 58 | Train Loss: 8.1472 | Val Loss: 8.3956
+No improvement. Early stopping patience 2/20
+Epoch 59 | Train Loss: 8.1576 | Val Loss: 8.4384
+No improvement. Early stopping patience 3/20
+Epoch 60 | Train Loss: 8.1634 | Val Loss: 8.3836
+No improvement. Early stopping patience 4/20
+Epoch 61 | Train Loss: 8.1441 | Val Loss: 8.4065
+No improvement. Early stopping patience 5/20
+Epoch 62 | Train Loss: 8.1312 | Val Loss: 8.4509
+No improvement. Early stopping patience 6/20
+Epoch 63 | Train Loss: 8.1488 | Val Loss: 8.4317
+No improvement. Early stopping patience 7/20
+Epoch 64 | Train Loss: 8.1464 | Val Loss: 8.3426
+Validation loss improved. Model saved to best_model_63.pth
+Epoch 65 | Train Loss: 8.1486 | Val Loss: 8.3946
+No improvement. Early stopping patience 1/20
+Epoch 66 | Train Loss: 8.1391 | Val Loss: 8.4087
+No improvement. Early stopping patience 2/20
+Epoch 67 | Train Loss: 8.1372 | Val Loss: 8.3810
+No improvement. Early stopping patience 3/20
+Epoch 68 | Train Loss: 8.1447 | Val Loss: 8.4538
+No improvement. Early stopping patience 4/20
+Epoch 69 | Train Loss: 8.1369 | Val Loss: 8.3583
+No improvement. Early stopping patience 5/20
+Epoch 70 | Train Loss: 8.1304 | Val Loss: 8.4063
+No improvement. Early stopping patience 6/20
+Epoch 71 | Train Loss: 8.1246 | Val Loss: 8.3789
+No improvement. Early stopping patience 7/20
+Epoch 72 | Train Loss: 8.1230 | Val Loss: 8.3547
+No improvement. Early stopping patience 8/20
+Epoch 73 | Train Loss: 8.1382 | Val Loss: 8.3935
+No improvement. Early stopping patience 9/20
+Epoch 74 | Train Loss: 8.1329 | Val Loss: 8.3400
+Validation loss improved. Model saved to best_model_73.pth
+Epoch 75 | Train Loss: 8.1406 | Val Loss: 8.4101
+No improvement. Early stopping patience 1/20
+Epoch 76 | Train Loss: 8.1225 | Val Loss: 8.3536
+No improvement. Early stopping patience 2/20
+Epoch 77 | Train Loss: 8.1280 | Val Loss: 8.4427
+No improvement. Early stopping patience 3/20
+Epoch 78 | Train Loss: 8.1220 | Val Loss: 8.4247
+No improvement. Early stopping patience 4/20
+Epoch 79 | Train Loss: 8.1274 | Val Loss: 8.4020
+No improvement. Early stopping patience 5/20
+Epoch 80 | Train Loss: 8.1126 | Val Loss: 8.4019
+No improvement. Early stopping patience 6/20
+Epoch 81 | Train Loss: 8.1166 | Val Loss: 8.4408
+No improvement. Early stopping patience 7/20
+Epoch 82 | Train Loss: 8.1166 | Val Loss: 8.3877
+No improvement. Early stopping patience 8/20
+Epoch 83 | Train Loss: 8.1090 | Val Loss: 8.3825
+No improvement. Early stopping patience 9/20
+Epoch 84 | Train Loss: 8.1188 | Val Loss: 8.3683
+No improvement. Early stopping patience 10/20
+Epoch 85 | Train Loss: 8.1152 | Val Loss: 8.3354
+Validation loss improved. Model saved to best_model_84.pth
+Epoch 86 | Train Loss: 8.1138 | Val Loss: 8.3944
+No improvement. Early stopping patience 1/20
+Epoch 87 | Train Loss: 8.1230 | Val Loss: 8.3780
+No improvement. Early stopping patience 2/20
+Epoch 88 | Train Loss: 8.1243 | Val Loss: 8.3825
+No improvement. Early stopping patience 3/20
+Epoch 89 | Train Loss: 8.1141 | Val Loss: 8.4429
+No improvement. Early stopping patience 4/20
+Epoch 90 | Train Loss: 8.1273 | Val Loss: 8.3699
+No improvement. Early stopping patience 5/20
+Epoch 91 | Train Loss: 8.1018 | Val Loss: 8.4011
+No improvement. Early stopping patience 6/20
+Epoch 92 | Train Loss: 8.1128 | Val Loss: 8.3517
+No improvement. Early stopping patience 7/20
+Epoch 93 | Train Loss: 8.1236 | Val Loss: 8.4132
+No improvement. Early stopping patience 8/20
+Epoch 94 | Train Loss: 8.1035 | Val Loss: 8.3752
+No improvement. Early stopping patience 9/20
+Epoch 95 | Train Loss: 8.1258 | Val Loss: 8.4244
+No improvement. Early stopping patience 10/20
+Epoch 96 | Train Loss: 8.1284 | Val Loss: 8.3286
+Validation loss improved. Model saved to best_model_95.pth
+Epoch 97 | Train Loss: 8.1207 | Val Loss: 8.3663
+No improvement. Early stopping patience 1/20
+Epoch 98 | Train Loss: 8.1208 | Val Loss: 8.3923
+No improvement. Early stopping patience 2/20
+Epoch 99 | Train Loss: 8.1050 | Val Loss: 8.3678
+No improvement. Early stopping patience 3/20
+Epoch 100 | Train Loss: 8.1148 | Val Loss: 8.4117
+No improvement. Early stopping patience 4/20
+Epoch 101 | Train Loss: 8.1090 | Val Loss: 8.3725
+No improvement. Early stopping patience 5/20
+Epoch 102 | Train Loss: 8.1129 | Val Loss: 8.3315
+No improvement. Early stopping patience 6/20
+Epoch 103 | Train Loss: 8.1075 | Val Loss: 8.4284
+No improvement. Early stopping patience 7/20
+Epoch 104 | Train Loss: 8.1027 | Val Loss: 8.3727
+No improvement. Early stopping patience 8/20
+Epoch 105 | Train Loss: 8.1241 | Val Loss: 8.3385
+No improvement. Early stopping patience 9/20
+Epoch 106 | Train Loss: 8.1117 | Val Loss: 8.3922
+No improvement. Early stopping patience 10/20
+Epoch 107 | Train Loss: 8.1016 | Val Loss: 8.3871
+No improvement. Early stopping patience 11/20
+Epoch 108 | Train Loss: 8.0948 | Val Loss: 8.3352
+No improvement. Early stopping patience 12/20
+Epoch 109 | Train Loss: 8.1057 | Val Loss: 8.3859
+No improvement. Early stopping patience 13/20
+Epoch 110 | Train Loss: 8.0978 | Val Loss: 8.3655
+No improvement. Early stopping patience 14/20
+Epoch 111 | Train Loss: 8.1174 | Val Loss: 8.3774
+No improvement. Early stopping patience 15/20
+Epoch 112 | Train Loss: 8.1231 | Val Loss: 8.4102
+No improvement. Early stopping patience 16/20
+Epoch 113 | Train Loss: 8.1033 | Val Loss: 8.3668
+No improvement. Early stopping patience 17/20
+Epoch 114 | Train Loss: 8.1034 | Val Loss: 8.4142
+No improvement. Early stopping patience 18/20
+Epoch 115 | Train Loss: 8.1102 | Val Loss: 8.3727
+No improvement. Early stopping patience 19/20
+Epoch 116 | Train Loss: 8.0981 | Val Loss: 8.3700
+No improvement. Early stopping patience 20/20
+Early stopping triggered!
+Training complete.
+Model saved to fish_bout_transformer.pth
+2025-08-31 08:35:08,889 - wandb.wandb_agent - INFO - Cleaning up finished run: ao3dyhjc
+2025-08-31 08:35:10,118 - wandb.wandb_agent - INFO - Agent received command: run
+2025-08-31 08:35:10,118 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 128
+	model.num_layers: 2
+	training.batch_size: 128
+	training.lr: 1e-4
+	training.optimizer: adam
+2025-08-31 08:35:10,122 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=128 --model.num_layers=2 --training.batch_size=128 --training.lr=1e-4 --training.optimizer=adam
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+2025-08-31 08:35:15,137 - wandb.wandb_agent - INFO - Running runs: ['ugbv6np0']
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250831_083514-ugbv6np0
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run stilted-sweep-3830
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/ugbv6np0
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+wandb: uploading fish_bout_transformer.pth
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▅▆▆▆▇▇▇▇▇███
+wandb: train_loss █▇▆▅▄▃▃▃▃▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁
+wandb:   val_loss █▇▄▃▃▃▃▃▃▃▃▃▃▃▂▃▂▂▂▂▃▂▂▂▂▂▂▁▂▃▁▂▂▂▂▁▂▁▂▁
+wandb: 
+wandb: Run summary:
+wandb:      epoch 116
+wandb: train_loss 8.09809
+wandb:   val_loss 8.36995
+wandb: 
+wandb: 🚀 View run stilted-sweep-3830 at: https://wandb.ai/bozek-lab/klyczek/runs/ugbv6np0
+wandb: ⭐️ View project at: https://wandb.ai/bozek-lab/klyczek
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250831_083514-ugbv6np0/logs
+{'model': {'nhead': 4, 'num_layers': 4, 'd_model': 16, 'dim_feedforward': 64, 'dropout': 0}, 'training': {'optimizer': 'adam', 'loss': 'mse', 'train_fraction': 0.7, 'val_fraction': 0.15, 'early_stopping': {'patience': 20, 'delta': '1e-4', 'enabled': True}, 'batch_size': 64, 'lr': '1e-3', 'epochs': 5000}, 'masking': {'percentage': 0.1, 'type': 'random'}, 'data': {'raw_path': 'Datasets/JM_data/pool_ex8_PCs.h5', 'conditions_path': 'sensory_contexts_data.npy', 'processed_dir': 'processed_data', 'input_dim': 20, 'sequence_length': 5}, 'seed': 42, 'model.d_model': 128, 'model.num_layers': 2, 'training.batch_size': 128, 'training.lr': '1e-4', 'training.optimizer': 'adam'}
+Using device: cuda
+Total fish: 463, PCA shape: (463, 11651, 20), Nonzero mask shape: (463, 11651)
+Conditions index shape: (463,)
+Train size: 324, Val+Test size: 139
+Validation size: 69, Test size: 70
+Validation: [136 196 304  69 382  42 340 194 172 375 139 257 294  18 433  39 327   3
+  64 175 162  97  55 190   0  73 460 420 189 315  90 402 211 451 323 431
+ 287 445 128 400 339   9  70 225 380 260  48  60 394 215 258 143  92 275
+ 123  36 351 388 286 459 229 145 120 203 328 218 406 115 306], Test: [ 14 243 280 343 295 336  46  37  95 256 147  34 372 164 105 341 154  76
+ 171 193 408 246 165 414   8 305 106 373  11  30 335 111 198  85 387 319
+  51  63 245  57 363 163 357 170 457 224 418 269 118 446 401 422 272 192
+ 296 236 409 126 132 251  75 432 298 322 398 312 220 290 151 338]
+Filtered PCA shapes before sliding windowing: train=855666, val=168579, test=179164
+------------------------------------------------
+pca_train (855666, 20)
+pca_val (168579, 20)
+pca_test (179164, 20)
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Sliding window shapes: train=(855662, 5, 20), val=(168575, 5, 20), test=(179160, 5, 20)
+Used for normalization Mean: -0.020540177822113037, Std: 2.958566427230835
+computing statistics of normalized data...
+Computing statistics...
+data shape (855666, 20)
+Mean: [-0.07147445 -0.02654471  0.00594199 -0.01526083  0.02245913  0.00886189
+ -0.00480005  0.01897094 -0.00510478  0.01337345  0.00727783 -0.0105848
+  0.008703    0.01165554  0.00297649  0.00334368  0.01178533  0.00608745
+  0.00580774  0.00652527]
+Std: [3.3930488  1.8579689  1.3172467  0.95604557 0.7538536  0.6349819
+ 0.49556956 0.43013024 0.3855307  0.3534618  0.3362313  0.30166525
+ 0.29565826 0.2810776  0.26965678 0.24582428 0.22715306 0.222977
+ 0.20893516 0.19797136]
+Min: [-14.745865   -7.2742524  -7.820161  -10.584296   -8.633671   -7.402835
+  -8.153663   -7.5519214  -8.83606    -5.5585155  -8.005968   -6.0925484
+  -5.273824   -4.243041   -5.251655   -6.7276654  -4.0602183  -5.8668528
+  -4.9751487  -4.3395944]
+Max: [13.926668   8.35889    8.883585  10.488048   8.8945     7.7731733
+  9.588728   7.0542965  8.008823   5.7573376  7.764988   7.223602
+  3.866642   4.544867   7.341009   6.1028934  4.7812905  6.3133965
+  6.5313063  3.801991 ]
+Using learning rate: 0.001
+FishBoutEncoder(
+  (input_proj): Linear(in_features=20, out_features=16, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=16, out_features=16, bias=True)
+        )
+        (linear1): Linear(in_features=16, out_features=64, bias=True)
+        (dropout): Dropout(p=0, inplace=False)
+        (linear2): Linear(in_features=64, out_features=16, bias=True)
+        (norm1): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0, inplace=False)
+        (dropout2): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (output): Linear(in_features=16, out_features=20, bias=True)
+)
+Starting training...
+Epoch 1 | Train Loss: 8.6205 | Val Loss: 8.7964
+Validation loss improved. Model saved to best_model_0.pth
+Epoch 2 | Train Loss: 8.5440 | Val Loss: 8.7277
+Validation loss improved. Model saved to best_model_1.pth
+Epoch 3 | Train Loss: 8.4908 | Val Loss: 8.7197
+Validation loss improved. Model saved to best_model_2.pth
+Epoch 4 | Train Loss: 8.4571 | Val Loss: 8.6423
+Validation loss improved. Model saved to best_model_3.pth
+Epoch 5 | Train Loss: 8.4122 | Val Loss: 8.5862
+Validation loss improved. Model saved to best_model_4.pth
+Epoch 6 | Train Loss: 8.3833 | Val Loss: 8.5527
+Validation loss improved. Model saved to best_model_5.pth
+Epoch 7 | Train Loss: 8.3475 | Val Loss: 8.5606
+No improvement. Early stopping patience 1/20
+Epoch 8 | Train Loss: 8.3324 | Val Loss: 8.5808
+No improvement. Early stopping patience 2/20
+Epoch 9 | Train Loss: 8.2949 | Val Loss: 8.5447
+Validation loss improved. Model saved to best_model_8.pth
+Epoch 10 | Train Loss: 8.2910 | Val Loss: 8.5245
+Validation loss improved. Model saved to best_model_9.pth
+Epoch 11 | Train Loss: 8.2923 | Val Loss: 8.4561
+Validation loss improved. Model saved to best_model_10.pth
+Epoch 12 | Train Loss: 8.2583 | Val Loss: 8.4946
+No improvement. Early stopping patience 1/20
+Epoch 13 | Train Loss: 8.2606 | Val Loss: 8.5094
+No improvement. Early stopping patience 2/20
+Epoch 14 | Train Loss: 8.2535 | Val Loss: 8.4829
+No improvement. Early stopping patience 3/20
+Epoch 15 | Train Loss: 8.2243 | Val Loss: 8.4626
+No improvement. Early stopping patience 4/20
+Epoch 16 | Train Loss: 8.2480 | Val Loss: 8.4991
+No improvement. Early stopping patience 5/20
+Epoch 17 | Train Loss: 8.2459 | Val Loss: 8.4310
+Validation loss improved. Model saved to best_model_16.pth
+Epoch 18 | Train Loss: 8.2242 | Val Loss: 8.4867
+No improvement. Early stopping patience 1/20
+Epoch 19 | Train Loss: 8.2148 | Val Loss: 8.4399
+No improvement. Early stopping patience 2/20
+Epoch 20 | Train Loss: 8.2170 | Val Loss: 8.4626
+No improvement. Early stopping patience 3/20
+Epoch 21 | Train Loss: 8.2176 | Val Loss: 8.4840
+No improvement. Early stopping patience 4/20
+Epoch 22 | Train Loss: 8.2046 | Val Loss: 8.4476
+No improvement. Early stopping patience 5/20
+Epoch 23 | Train Loss: 8.2007 | Val Loss: 8.4445
+No improvement. Early stopping patience 6/20
+Epoch 24 | Train Loss: 8.1978 | Val Loss: 8.4000
+Validation loss improved. Model saved to best_model_23.pth
+Epoch 25 | Train Loss: 8.2100 | Val Loss: 8.4464
+No improvement. Early stopping patience 1/20
+Epoch 26 | Train Loss: 8.1909 | Val Loss: 8.4232
+No improvement. Early stopping patience 2/20
+Epoch 27 | Train Loss: 8.1997 | Val Loss: 8.4398
+No improvement. Early stopping patience 3/20
+Epoch 28 | Train Loss: 8.1815 | Val Loss: 8.4370
+No improvement. Early stopping patience 4/20
+Epoch 29 | Train Loss: 8.1896 | Val Loss: 8.4901
+No improvement. Early stopping patience 5/20
+Epoch 30 | Train Loss: 8.1810 | Val Loss: 8.4796
+No improvement. Early stopping patience 6/20
+Epoch 31 | Train Loss: 8.1850 | Val Loss: 8.4027
+No improvement. Early stopping patience 7/20
+Epoch 32 | Train Loss: 8.1893 | Val Loss: 8.4355
+No improvement. Early stopping patience 8/20
+Epoch 33 | Train Loss: 8.1831 | Val Loss: 8.4274
+No improvement. Early stopping patience 9/20
+Epoch 34 | Train Loss: 8.1772 | Val Loss: 8.3968
+Validation loss improved. Model saved to best_model_33.pth
+Epoch 35 | Train Loss: 8.1744 | Val Loss: 8.4576
+No improvement. Early stopping patience 1/20
+Epoch 36 | Train Loss: 8.1709 | Val Loss: 8.4271
+No improvement. Early stopping patience 2/20
+Epoch 37 | Train Loss: 8.1741 | Val Loss: 8.4161
+No improvement. Early stopping patience 3/20
+Epoch 38 | Train Loss: 8.1783 | Val Loss: 8.3954
+Validation loss improved. Model saved to best_model_37.pth
+Epoch 39 | Train Loss: 8.1666 | Val Loss: 8.4267
+No improvement. Early stopping patience 1/20
+Epoch 40 | Train Loss: 8.1744 | Val Loss: 8.4082
+No improvement. Early stopping patience 2/20
+Epoch 41 | Train Loss: 8.1711 | Val Loss: 8.4197
+No improvement. Early stopping patience 3/20
+Epoch 42 | Train Loss: 8.1579 | Val Loss: 8.4426
+No improvement. Early stopping patience 4/20
+Epoch 43 | Train Loss: 8.1597 | Val Loss: 8.4673
+No improvement. Early stopping patience 5/20
+Epoch 44 | Train Loss: 8.1686 | Val Loss: 8.3915
+Validation loss improved. Model saved to best_model_43.pth
+Epoch 45 | Train Loss: 8.1729 | Val Loss: 8.3921
+No improvement. Early stopping patience 1/20
+Epoch 46 | Train Loss: 8.1651 | Val Loss: 8.4061
+No improvement. Early stopping patience 2/20
+Epoch 47 | Train Loss: 8.1707 | Val Loss: 8.3997
+No improvement. Early stopping patience 3/20
+Epoch 48 | Train Loss: 8.1516 | Val Loss: 8.4357
+No improvement. Early stopping patience 4/20
+Epoch 49 | Train Loss: 8.1573 | Val Loss: 8.4788
+No improvement. Early stopping patience 5/20
+Epoch 50 | Train Loss: 8.1514 | Val Loss: 8.3913
+Validation loss improved. Model saved to best_model_49.pth
+Epoch 51 | Train Loss: 8.1611 | Val Loss: 8.4473
+No improvement. Early stopping patience 1/20
+Epoch 52 | Train Loss: 8.1498 | Val Loss: 8.4239
+No improvement. Early stopping patience 2/20
+Epoch 53 | Train Loss: 8.1585 | Val Loss: 8.3881
+Validation loss improved. Model saved to best_model_52.pth
+Epoch 54 | Train Loss: 8.1572 | Val Loss: 8.4331
+No improvement. Early stopping patience 1/20
+Epoch 55 | Train Loss: 8.1418 | Val Loss: 8.3969
+No improvement. Early stopping patience 2/20
+Epoch 56 | Train Loss: 8.1420 | Val Loss: 8.3444
+Validation loss improved. Model saved to best_model_55.pth
+Epoch 57 | Train Loss: 8.1428 | Val Loss: 8.4433
+No improvement. Early stopping patience 1/20
+Epoch 58 | Train Loss: 8.1472 | Val Loss: 8.3956
+No improvement. Early stopping patience 2/20
+Epoch 59 | Train Loss: 8.1576 | Val Loss: 8.4384
+No improvement. Early stopping patience 3/20
+Epoch 60 | Train Loss: 8.1634 | Val Loss: 8.3836
+No improvement. Early stopping patience 4/20
+Epoch 61 | Train Loss: 8.1441 | Val Loss: 8.4065
+No improvement. Early stopping patience 5/20
+Epoch 62 | Train Loss: 8.1312 | Val Loss: 8.4509
+No improvement. Early stopping patience 6/20
+Epoch 63 | Train Loss: 8.1488 | Val Loss: 8.4317
+No improvement. Early stopping patience 7/20
+Epoch 64 | Train Loss: 8.1464 | Val Loss: 8.3426
+Validation loss improved. Model saved to best_model_63.pth
+Epoch 65 | Train Loss: 8.1486 | Val Loss: 8.3946
+No improvement. Early stopping patience 1/20
+Epoch 66 | Train Loss: 8.1391 | Val Loss: 8.4087
+No improvement. Early stopping patience 2/20
+Epoch 67 | Train Loss: 8.1372 | Val Loss: 8.3810
+No improvement. Early stopping patience 3/20
+Epoch 68 | Train Loss: 8.1447 | Val Loss: 8.4538
+No improvement. Early stopping patience 4/20
+Epoch 69 | Train Loss: 8.1369 | Val Loss: 8.3583
+No improvement. Early stopping patience 5/20
+Epoch 70 | Train Loss: 8.1304 | Val Loss: 8.4063
+No improvement. Early stopping patience 6/20
+Epoch 71 | Train Loss: 8.1246 | Val Loss: 8.3789
+No improvement. Early stopping patience 7/20
+Epoch 72 | Train Loss: 8.1230 | Val Loss: 8.3547
+No improvement. Early stopping patience 8/20
+Epoch 73 | Train Loss: 8.1382 | Val Loss: 8.3935
+No improvement. Early stopping patience 9/20
+Epoch 74 | Train Loss: 8.1329 | Val Loss: 8.3400
+Validation loss improved. Model saved to best_model_73.pth
+Epoch 75 | Train Loss: 8.1406 | Val Loss: 8.4101
+No improvement. Early stopping patience 1/20
+Epoch 76 | Train Loss: 8.1225 | Val Loss: 8.3536
+No improvement. Early stopping patience 2/20
+Epoch 77 | Train Loss: 8.1280 | Val Loss: 8.4427
+No improvement. Early stopping patience 3/20
+Epoch 78 | Train Loss: 8.1220 | Val Loss: 8.4247
+No improvement. Early stopping patience 4/20
+Epoch 79 | Train Loss: 8.1274 | Val Loss: 8.4020
+No improvement. Early stopping patience 5/20
+Epoch 80 | Train Loss: 8.1126 | Val Loss: 8.4019
+No improvement. Early stopping patience 6/20
+Epoch 81 | Train Loss: 8.1166 | Val Loss: 8.4408
+No improvement. Early stopping patience 7/20
+Epoch 82 | Train Loss: 8.1166 | Val Loss: 8.3877
+No improvement. Early stopping patience 8/20
+Epoch 83 | Train Loss: 8.1090 | Val Loss: 8.3825
+No improvement. Early stopping patience 9/20
+Epoch 84 | Train Loss: 8.1188 | Val Loss: 8.3683
+No improvement. Early stopping patience 10/20
+Epoch 85 | Train Loss: 8.1152 | Val Loss: 8.3354
+Validation loss improved. Model saved to best_model_84.pth
+Epoch 86 | Train Loss: 8.1138 | Val Loss: 8.3944
+No improvement. Early stopping patience 1/20
+Epoch 87 | Train Loss: 8.1230 | Val Loss: 8.3780
+No improvement. Early stopping patience 2/20
+Epoch 88 | Train Loss: 8.1243 | Val Loss: 8.3825
+No improvement. Early stopping patience 3/20
+Epoch 89 | Train Loss: 8.1141 | Val Loss: 8.4429
+No improvement. Early stopping patience 4/20
+Epoch 90 | Train Loss: 8.1273 | Val Loss: 8.3699
+No improvement. Early stopping patience 5/20
+Epoch 91 | Train Loss: 8.1018 | Val Loss: 8.4011
+No improvement. Early stopping patience 6/20
+Epoch 92 | Train Loss: 8.1128 | Val Loss: 8.3517
+No improvement. Early stopping patience 7/20
+Epoch 93 | Train Loss: 8.1236 | Val Loss: 8.4132
+No improvement. Early stopping patience 8/20
+Epoch 94 | Train Loss: 8.1035 | Val Loss: 8.3752
+No improvement. Early stopping patience 9/20
+Epoch 95 | Train Loss: 8.1258 | Val Loss: 8.4244
+No improvement. Early stopping patience 10/20
+Epoch 96 | Train Loss: 8.1284 | Val Loss: 8.3286
+Validation loss improved. Model saved to best_model_95.pth
+Epoch 97 | Train Loss: 8.1207 | Val Loss: 8.3663
+No improvement. Early stopping patience 1/20
+Epoch 98 | Train Loss: 8.1208 | Val Loss: 8.3923
+No improvement. Early stopping patience 2/20
+Epoch 99 | Train Loss: 8.1050 | Val Loss: 8.3678
+No improvement. Early stopping patience 3/20
+Epoch 100 | Train Loss: 8.1148 | Val Loss: 8.4117
+No improvement. Early stopping patience 4/20
+Epoch 101 | Train Loss: 8.1090 | Val Loss: 8.3725
+No improvement. Early stopping patience 5/20
+Epoch 102 | Train Loss: 8.1129 | Val Loss: 8.3315
+No improvement. Early stopping patience 6/20
+Epoch 103 | Train Loss: 8.1075 | Val Loss: 8.4284
+No improvement. Early stopping patience 7/20
+Epoch 104 | Train Loss: 8.1027 | Val Loss: 8.3727
+No improvement. Early stopping patience 8/20
+Epoch 105 | Train Loss: 8.1241 | Val Loss: 8.3385
+No improvement. Early stopping patience 9/20
+Epoch 106 | Train Loss: 8.1117 | Val Loss: 8.3922
+No improvement. Early stopping patience 10/20
+Epoch 107 | Train Loss: 8.1016 | Val Loss: 8.3871
+No improvement. Early stopping patience 11/20
+Epoch 108 | Train Loss: 8.0948 | Val Loss: 8.3352
+No improvement. Early stopping patience 12/20
+Epoch 109 | Train Loss: 8.1057 | Val Loss: 8.3859
+No improvement. Early stopping patience 13/20
+Epoch 110 | Train Loss: 8.0978 | Val Loss: 8.3655
+No improvement. Early stopping patience 14/20
+Epoch 111 | Train Loss: 8.1174 | Val Loss: 8.3774
+No improvement. Early stopping patience 15/20
+Epoch 112 | Train Loss: 8.1231 | Val Loss: 8.4102
+No improvement. Early stopping patience 16/20
+Epoch 113 | Train Loss: 8.1033 | Val Loss: 8.3668
+No improvement. Early stopping patience 17/20
+Epoch 114 | Train Loss: 8.1034 | Val Loss: 8.4142
+No improvement. Early stopping patience 18/20
+Epoch 115 | Train Loss: 8.1102 | Val Loss: 8.3727
+No improvement. Early stopping patience 19/20
+Epoch 116 | Train Loss: 8.0981 | Val Loss: 8.3700
+No improvement. Early stopping patience 20/20
+Early stopping triggered!
+Training complete.
+Model saved to fish_bout_transformer.pth
+2025-08-31 22:04:40,242 - wandb.wandb_agent - INFO - Cleaning up finished run: ugbv6np0
+2025-08-31 22:04:41,449 - wandb.wandb_agent - INFO - Agent received command: run
+2025-08-31 22:04:41,449 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 256
+	model.num_layers: 3
+	training.batch_size: 64
+	training.lr: 1e-4
+	training.optimizer: sgd
+2025-08-31 22:04:41,453 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=256 --model.num_layers=3 --training.batch_size=64 --training.lr=1e-4 --training.optimizer=sgd
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+2025-08-31 22:04:46,467 - wandb.wandb_agent - INFO - Running runs: ['yzdzi765']
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250831_220445-yzdzi765
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run leafy-sweep-3833
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/yzdzi765
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+wandb: uploading fish_bout_transformer.pth
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇█████
+wandb: train_loss █▇▅▄▄▃▃▂▂▂▂▂▂▂▂▂▂▂▂▂▁▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:   val_loss █▆▄▂▃▃▂▃▂▃▃▂▂▂▃▂▃▂▃▃▃▂▁▃▂▁▂▃▂▁▁▁▂▂▂▁▂▂▂▂
+wandb: 
+wandb: Run summary:
+wandb:      epoch 116
+wandb: train_loss 8.09809
+wandb:   val_loss 8.36995
+wandb: 
+wandb: 🚀 View run leafy-sweep-3833 at: https://wandb.ai/bozek-lab/klyczek/runs/yzdzi765
+wandb: ⭐️ View project at: https://wandb.ai/bozek-lab/klyczek
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250831_220445-yzdzi765/logs
+{'model': {'num_layers': 4, 'd_model': 16, 'dim_feedforward': 64, 'dropout': 0, 'nhead': 4}, 'training': {'early_stopping': {'enabled': True, 'patience': 20, 'delta': '1e-4'}, 'batch_size': 64, 'lr': '1e-3', 'epochs': 5000, 'optimizer': 'adam', 'loss': 'mse', 'train_fraction': 0.7, 'val_fraction': 0.15}, 'masking': {'type': 'random', 'percentage': 0.1}, 'data': {'sequence_length': 5, 'raw_path': 'Datasets/JM_data/pool_ex8_PCs.h5', 'conditions_path': 'sensory_contexts_data.npy', 'processed_dir': 'processed_data', 'input_dim': 20}, 'seed': 42, 'model.d_model': 256, 'model.num_layers': 3, 'training.batch_size': 64, 'training.lr': '1e-4', 'training.optimizer': 'sgd'}
+Using device: cuda
+Total fish: 463, PCA shape: (463, 11651, 20), Nonzero mask shape: (463, 11651)
+Conditions index shape: (463,)
+Train size: 324, Val+Test size: 139
+Validation size: 69, Test size: 70
+Validation: [136 196 304  69 382  42 340 194 172 375 139 257 294  18 433  39 327   3
+  64 175 162  97  55 190   0  73 460 420 189 315  90 402 211 451 323 431
+ 287 445 128 400 339   9  70 225 380 260  48  60 394 215 258 143  92 275
+ 123  36 351 388 286 459 229 145 120 203 328 218 406 115 306], Test: [ 14 243 280 343 295 336  46  37  95 256 147  34 372 164 105 341 154  76
+ 171 193 408 246 165 414   8 305 106 373  11  30 335 111 198  85 387 319
+  51  63 245  57 363 163 357 170 457 224 418 269 118 446 401 422 272 192
+ 296 236 409 126 132 251  75 432 298 322 398 312 220 290 151 338]
+Filtered PCA shapes before sliding windowing: train=855666, val=168579, test=179164
+------------------------------------------------
+pca_train (855666, 20)
+pca_val (168579, 20)
+pca_test (179164, 20)
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Creating sliding windows of size 5...
+Sliding window shapes: train=(855662, 5, 20), val=(168575, 5, 20), test=(179160, 5, 20)
+Used for normalization Mean: -0.020540177822113037, Std: 2.958566427230835
+computing statistics of normalized data...
+Computing statistics...
+data shape (855666, 20)
+Mean: [-0.07147445 -0.02654471  0.00594199 -0.01526083  0.02245913  0.00886189
+ -0.00480005  0.01897094 -0.00510478  0.01337345  0.00727783 -0.0105848
+  0.008703    0.01165554  0.00297649  0.00334368  0.01178533  0.00608745
+  0.00580774  0.00652527]
+Std: [3.3930488  1.8579689  1.3172467  0.95604557 0.7538536  0.6349819
+ 0.49556956 0.43013024 0.3855307  0.3534618  0.3362313  0.30166525
+ 0.29565826 0.2810776  0.26965678 0.24582428 0.22715306 0.222977
+ 0.20893516 0.19797136]
+Min: [-14.745865   -7.2742524  -7.820161  -10.584296   -8.633671   -7.402835
+  -8.153663   -7.5519214  -8.83606    -5.5585155  -8.005968   -6.0925484
+  -5.273824   -4.243041   -5.251655   -6.7276654  -4.0602183  -5.8668528
+  -4.9751487  -4.3395944]
+Max: [13.926668   8.35889    8.883585  10.488048   8.8945     7.7731733
+  9.588728   7.0542965  8.008823   5.7573376  7.764988   7.223602
+  3.866642   4.544867   7.341009   6.1028934  4.7812905  6.3133965
+  6.5313063  3.801991 ]
+Using learning rate: 0.001
+FishBoutEncoder(
+  (input_proj): Linear(in_features=20, out_features=16, bias=True)
+  (pos_encoder): PositionalEncoding(
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-3): 4 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=16, out_features=16, bias=True)
+        )
+        (linear1): Linear(in_features=16, out_features=64, bias=True)
+        (dropout): Dropout(p=0, inplace=False)
+        (linear2): Linear(in_features=64, out_features=16, bias=True)
+        (norm1): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+        (dropout1): Dropout(p=0, inplace=False)
+        (dropout2): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (output): Linear(in_features=16, out_features=20, bias=True)
+)
+Starting training...
+Epoch 1 | Train Loss: 8.6205 | Val Loss: 8.7964
+Validation loss improved. Model saved to best_model_0.pth
+Epoch 2 | Train Loss: 8.5440 | Val Loss: 8.7277
+Validation loss improved. Model saved to best_model_1.pth
+Epoch 3 | Train Loss: 8.4908 | Val Loss: 8.7197
+Validation loss improved. Model saved to best_model_2.pth
+Epoch 4 | Train Loss: 8.4571 | Val Loss: 8.6423
+Validation loss improved. Model saved to best_model_3.pth
+Epoch 5 | Train Loss: 8.4122 | Val Loss: 8.5862
+Validation loss improved. Model saved to best_model_4.pth
+Epoch 6 | Train Loss: 8.3833 | Val Loss: 8.5527
+Validation loss improved. Model saved to best_model_5.pth
+Epoch 7 | Train Loss: 8.3475 | Val Loss: 8.5606
+No improvement. Early stopping patience 1/20
+Epoch 8 | Train Loss: 8.3324 | Val Loss: 8.5808
+No improvement. Early stopping patience 2/20
+Epoch 9 | Train Loss: 8.2949 | Val Loss: 8.5447
+Validation loss improved. Model saved to best_model_8.pth
+Epoch 10 | Train Loss: 8.2910 | Val Loss: 8.5245
+Validation loss improved. Model saved to best_model_9.pth
+Epoch 11 | Train Loss: 8.2923 | Val Loss: 8.4561
+Validation loss improved. Model saved to best_model_10.pth
+Epoch 12 | Train Loss: 8.2583 | Val Loss: 8.4946
+No improvement. Early stopping patience 1/20
+Epoch 13 | Train Loss: 8.2606 | Val Loss: 8.5094
+No improvement. Early stopping patience 2/20
+Epoch 14 | Train Loss: 8.2535 | Val Loss: 8.4829
+No improvement. Early stopping patience 3/20
+Epoch 15 | Train Loss: 8.2243 | Val Loss: 8.4626
+No improvement. Early stopping patience 4/20
+Epoch 16 | Train Loss: 8.2480 | Val Loss: 8.4991
+No improvement. Early stopping patience 5/20
+Epoch 17 | Train Loss: 8.2459 | Val Loss: 8.4310
+Validation loss improved. Model saved to best_model_16.pth
+Epoch 18 | Train Loss: 8.2242 | Val Loss: 8.4867
+No improvement. Early stopping patience 1/20
+Epoch 19 | Train Loss: 8.2148 | Val Loss: 8.4399
+No improvement. Early stopping patience 2/20
+Epoch 20 | Train Loss: 8.2170 | Val Loss: 8.4626
+No improvement. Early stopping patience 3/20
+Epoch 21 | Train Loss: 8.2176 | Val Loss: 8.4840
+No improvement. Early stopping patience 4/20
+Epoch 22 | Train Loss: 8.2046 | Val Loss: 8.4476
+No improvement. Early stopping patience 5/20
+Epoch 23 | Train Loss: 8.2007 | Val Loss: 8.4445
+No improvement. Early stopping patience 6/20
+Epoch 24 | Train Loss: 8.1978 | Val Loss: 8.4000
+Validation loss improved. Model saved to best_model_23.pth
+Epoch 25 | Train Loss: 8.2100 | Val Loss: 8.4464
+No improvement. Early stopping patience 1/20
+Epoch 26 | Train Loss: 8.1909 | Val Loss: 8.4232
+No improvement. Early stopping patience 2/20
+Epoch 27 | Train Loss: 8.1997 | Val Loss: 8.4398
+No improvement. Early stopping patience 3/20
+Epoch 28 | Train Loss: 8.1815 | Val Loss: 8.4370
+No improvement. Early stopping patience 4/20
+Epoch 29 | Train Loss: 8.1896 | Val Loss: 8.4901
+No improvement. Early stopping patience 5/20
+Epoch 30 | Train Loss: 8.1810 | Val Loss: 8.4796
+No improvement. Early stopping patience 6/20
+Epoch 31 | Train Loss: 8.1850 | Val Loss: 8.4027
+No improvement. Early stopping patience 7/20
+Epoch 32 | Train Loss: 8.1893 | Val Loss: 8.4355
+No improvement. Early stopping patience 8/20
+Epoch 33 | Train Loss: 8.1831 | Val Loss: 8.4274
+No improvement. Early stopping patience 9/20
+Epoch 34 | Train Loss: 8.1772 | Val Loss: 8.3968
+Validation loss improved. Model saved to best_model_33.pth
+Epoch 35 | Train Loss: 8.1744 | Val Loss: 8.4576
+No improvement. Early stopping patience 1/20
+Epoch 36 | Train Loss: 8.1709 | Val Loss: 8.4271
+No improvement. Early stopping patience 2/20
+Epoch 37 | Train Loss: 8.1741 | Val Loss: 8.4161
+No improvement. Early stopping patience 3/20
+Epoch 38 | Train Loss: 8.1783 | Val Loss: 8.3954
+Validation loss improved. Model saved to best_model_37.pth
+Epoch 39 | Train Loss: 8.1666 | Val Loss: 8.4267
+No improvement. Early stopping patience 1/20
+Epoch 40 | Train Loss: 8.1744 | Val Loss: 8.4082
+No improvement. Early stopping patience 2/20
+Epoch 41 | Train Loss: 8.1711 | Val Loss: 8.4197
+No improvement. Early stopping patience 3/20
+Epoch 42 | Train Loss: 8.1579 | Val Loss: 8.4426
+No improvement. Early stopping patience 4/20
+Epoch 43 | Train Loss: 8.1597 | Val Loss: 8.4673
+No improvement. Early stopping patience 5/20
+Epoch 44 | Train Loss: 8.1686 | Val Loss: 8.3915
+Validation loss improved. Model saved to best_model_43.pth
+Epoch 45 | Train Loss: 8.1729 | Val Loss: 8.3921
+No improvement. Early stopping patience 1/20
+Epoch 46 | Train Loss: 8.1651 | Val Loss: 8.4061
+No improvement. Early stopping patience 2/20
+Epoch 47 | Train Loss: 8.1707 | Val Loss: 8.3997
+No improvement. Early stopping patience 3/20
+Epoch 48 | Train Loss: 8.1516 | Val Loss: 8.4357
+No improvement. Early stopping patience 4/20
+Epoch 49 | Train Loss: 8.1573 | Val Loss: 8.4788
+No improvement. Early stopping patience 5/20
+Epoch 50 | Train Loss: 8.1514 | Val Loss: 8.3913
+Validation loss improved. Model saved to best_model_49.pth
+Epoch 51 | Train Loss: 8.1611 | Val Loss: 8.4473
+No improvement. Early stopping patience 1/20
+Epoch 52 | Train Loss: 8.1498 | Val Loss: 8.4239
+No improvement. Early stopping patience 2/20
+Epoch 53 | Train Loss: 8.1585 | Val Loss: 8.3881
+Validation loss improved. Model saved to best_model_52.pth
+Epoch 54 | Train Loss: 8.1572 | Val Loss: 8.4331
+No improvement. Early stopping patience 1/20
+Epoch 55 | Train Loss: 8.1418 | Val Loss: 8.3969
+No improvement. Early stopping patience 2/20
+Epoch 56 | Train Loss: 8.1420 | Val Loss: 8.3444
+Validation loss improved. Model saved to best_model_55.pth
+Epoch 57 | Train Loss: 8.1428 | Val Loss: 8.4433
+No improvement. Early stopping patience 1/20
+Epoch 58 | Train Loss: 8.1472 | Val Loss: 8.3956
+No improvement. Early stopping patience 2/20
+Epoch 59 | Train Loss: 8.1576 | Val Loss: 8.4384
+No improvement. Early stopping patience 3/20
+Epoch 60 | Train Loss: 8.1634 | Val Loss: 8.3836
+No improvement. Early stopping patience 4/20
+Epoch 61 | Train Loss: 8.1441 | Val Loss: 8.4065
+No improvement. Early stopping patience 5/20
+Epoch 62 | Train Loss: 8.1312 | Val Loss: 8.4509
+No improvement. Early stopping patience 6/20
+Epoch 63 | Train Loss: 8.1488 | Val Loss: 8.4317
+No improvement. Early stopping patience 7/20
+Epoch 64 | Train Loss: 8.1464 | Val Loss: 8.3426
+Validation loss improved. Model saved to best_model_63.pth
+Epoch 65 | Train Loss: 8.1486 | Val Loss: 8.3946
+No improvement. Early stopping patience 1/20
+Epoch 66 | Train Loss: 8.1391 | Val Loss: 8.4087
+No improvement. Early stopping patience 2/20
+Epoch 67 | Train Loss: 8.1372 | Val Loss: 8.3810
+No improvement. Early stopping patience 3/20
+Epoch 68 | Train Loss: 8.1447 | Val Loss: 8.4538
+No improvement. Early stopping patience 4/20
+Epoch 69 | Train Loss: 8.1369 | Val Loss: 8.3583
+No improvement. Early stopping patience 5/20
+Epoch 70 | Train Loss: 8.1304 | Val Loss: 8.4063
+No improvement. Early stopping patience 6/20
+Epoch 71 | Train Loss: 8.1246 | Val Loss: 8.3789
+No improvement. Early stopping patience 7/20
+Epoch 72 | Train Loss: 8.1230 | Val Loss: 8.3547
+No improvement. Early stopping patience 8/20
+Epoch 73 | Train Loss: 8.1382 | Val Loss: 8.3935
+No improvement. Early stopping patience 9/20
+Epoch 74 | Train Loss: 8.1329 | Val Loss: 8.3400
+Validation loss improved. Model saved to best_model_73.pth
+Epoch 75 | Train Loss: 8.1406 | Val Loss: 8.4101
+No improvement. Early stopping patience 1/20
+Epoch 76 | Train Loss: 8.1225 | Val Loss: 8.3536
+No improvement. Early stopping patience 2/20
+Epoch 77 | Train Loss: 8.1280 | Val Loss: 8.4427
+No improvement. Early stopping patience 3/20
+Epoch 78 | Train Loss: 8.1220 | Val Loss: 8.4247
+No improvement. Early stopping patience 4/20
+Epoch 79 | Train Loss: 8.1274 | Val Loss: 8.4020
+No improvement. Early stopping patience 5/20
+Epoch 80 | Train Loss: 8.1126 | Val Loss: 8.4019
+No improvement. Early stopping patience 6/20
+Epoch 81 | Train Loss: 8.1166 | Val Loss: 8.4408
+No improvement. Early stopping patience 7/20
+Epoch 82 | Train Loss: 8.1166 | Val Loss: 8.3877
+No improvement. Early stopping patience 8/20
+Epoch 83 | Train Loss: 8.1090 | Val Loss: 8.3825
+No improvement. Early stopping patience 9/20
+Epoch 84 | Train Loss: 8.1188 | Val Loss: 8.3683
+No improvement. Early stopping patience 10/20
+Epoch 85 | Train Loss: 8.1152 | Val Loss: 8.3354
+Validation loss improved. Model saved to best_model_84.pth
+Epoch 86 | Train Loss: 8.1138 | Val Loss: 8.3944
+No improvement. Early stopping patience 1/20
+Epoch 87 | Train Loss: 8.1230 | Val Loss: 8.3780
+No improvement. Early stopping patience 2/20
+Epoch 88 | Train Loss: 8.1243 | Val Loss: 8.3825
+No improvement. Early stopping patience 3/20
+Epoch 89 | Train Loss: 8.1141 | Val Loss: 8.4429
+No improvement. Early stopping patience 4/20
+Epoch 90 | Train Loss: 8.1273 | Val Loss: 8.3699
+No improvement. Early stopping patience 5/20
+Epoch 91 | Train Loss: 8.1018 | Val Loss: 8.4011
+No improvement. Early stopping patience 6/20
+Epoch 92 | Train Loss: 8.1128 | Val Loss: 8.3517
+No improvement. Early stopping patience 7/20
+Epoch 93 | Train Loss: 8.1236 | Val Loss: 8.4132
+No improvement. Early stopping patience 8/20
+Epoch 94 | Train Loss: 8.1035 | Val Loss: 8.3752
+No improvement. Early stopping patience 9/20
+Epoch 95 | Train Loss: 8.1258 | Val Loss: 8.4244
+No improvement. Early stopping patience 10/20
+Epoch 96 | Train Loss: 8.1284 | Val Loss: 8.3286
+Validation loss improved. Model saved to best_model_95.pth
+Epoch 97 | Train Loss: 8.1207 | Val Loss: 8.3663
+No improvement. Early stopping patience 1/20
+Epoch 98 | Train Loss: 8.1208 | Val Loss: 8.3923
+No improvement. Early stopping patience 2/20
+Epoch 99 | Train Loss: 8.1050 | Val Loss: 8.3678
+No improvement. Early stopping patience 3/20
+Epoch 100 | Train Loss: 8.1148 | Val Loss: 8.4117
+No improvement. Early stopping patience 4/20
+Epoch 101 | Train Loss: 8.1090 | Val Loss: 8.3725
+No improvement. Early stopping patience 5/20
+Epoch 102 | Train Loss: 8.1129 | Val Loss: 8.3315
+No improvement. Early stopping patience 6/20
+Epoch 103 | Train Loss: 8.1075 | Val Loss: 8.4284
+No improvement. Early stopping patience 7/20
+Epoch 104 | Train Loss: 8.1027 | Val Loss: 8.3727
+No improvement. Early stopping patience 8/20
+Epoch 105 | Train Loss: 8.1241 | Val Loss: 8.3385
+No improvement. Early stopping patience 9/20
+Epoch 106 | Train Loss: 8.1117 | Val Loss: 8.3922
+No improvement. Early stopping patience 10/20
+Epoch 107 | Train Loss: 8.1016 | Val Loss: 8.3871
+No improvement. Early stopping patience 11/20
+Epoch 108 | Train Loss: 8.0948 | Val Loss: 8.3352
+No improvement. Early stopping patience 12/20
+Epoch 109 | Train Loss: 8.1057 | Val Loss: 8.3859
+No improvement. Early stopping patience 13/20
+Epoch 110 | Train Loss: 8.0978 | Val Loss: 8.3655
+No improvement. Early stopping patience 14/20
+Epoch 111 | Train Loss: 8.1174 | Val Loss: 8.3774
+No improvement. Early stopping patience 15/20
+Epoch 112 | Train Loss: 8.1231 | Val Loss: 8.4102
+No improvement. Early stopping patience 16/20
+Epoch 113 | Train Loss: 8.1033 | Val Loss: 8.3668
+No improvement. Early stopping patience 17/20
+Epoch 114 | Train Loss: 8.1034 | Val Loss: 8.4142
+No improvement. Early stopping patience 18/20
+Epoch 115 | Train Loss: 8.1102 | Val Loss: 8.3727
+No improvement. Early stopping patience 19/20
+Epoch 116 | Train Loss: 8.0981 | Val Loss: 8.3700
+No improvement. Early stopping patience 20/20
+Early stopping triggered!
+Training complete.
+Model saved to fish_bout_transformer.pth
+2025-09-01 11:38:22,882 - wandb.wandb_agent - INFO - Cleaning up finished run: yzdzi765
+2025-09-01 11:38:23,231 - wandb.wandb_agent - INFO - Agent received command: run
+2025-09-01 11:38:23,231 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 256
+	model.num_layers: 4
+	training.batch_size: 128
+	training.lr: 4e-5
+	training.optimizer: adam
+2025-09-01 11:38:23,235 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=256 --model.num_layers=4 --training.batch_size=128 --training.lr=4e-5 --training.optimizer=adam
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+2025-09-01 11:38:28,250 - wandb.wandb_agent - INFO - Running runs: ['1mea5xxu']
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250901_113827-1mea5xxu
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run silvery-sweep-3836
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/96zjimlj
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/1mea5xxu
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()

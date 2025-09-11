@@ -10,24 +10,44 @@ from torch import nn
 
 from train import train_model
 from process_data import process_data_and_split, one_hot_process_data_and_split
-from models.encoder import FishBoutEncoder
-from models.decoder import FishBoutDecoder
+from models.encoder import TransformerEncoder
+from models.decoder import TransformerDecoder
 
 
 # --- Load config ---
 with open("config.yaml", "r") as f:
-    config = yaml.safe_load(f)
+    base_cfg = yaml.safe_load(f)
+
+# --- wandb init --- (let the agent set project/entity)
+wandb.init(config=base_cfg)
+
+# --- Merge sweep dot-keys into nested dict ---
+def set_by_dots(d, dotted_key, value):
+    ks = dotted_key.split(".")
+    cur = d
+    for k in ks[:-1]:
+        if k not in cur or not isinstance(cur[k], dict):
+            cur[k] = {}
+        cur = cur[k]
+    cur[ks[-1]] = value
+
+config = base_cfg.copy()
+for k, v in dict(wandb.config).items():
+    if "." in k:
+        set_by_dots(config, k, v)
+    else:
+        # top-level overrides (if any)
+        config[k] = v
+
 
 # --- Setting random seeds for reproducibility ---
 random.seed(config["seed"])
 np.random.seed(config["seed"])
 torch.manual_seed(config["seed"])
 
-# --- wandb init ---
-wandb.init(project="zebrafish", config=config)
-config = wandb.config
-pprint.pprint(config)
-
+# # --- wandb init ---
+# wandb.init(config=config)  
+# config = wandb.config
 
 # --- Device ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -66,37 +86,39 @@ val_loader   = DataLoader(TensorDataset(val_data),   batch_size=config["training
 test_loader  = DataLoader(TensorDataset(test_data),  batch_size=config["training"]["batch_size"], shuffle=False)
 
 
-lr = float(config["training"]["lr"])  # ensure float
+lr = float(wandb.config["training.lr"])  # ensure float
 print(f"Using learning rate: {lr}")
 
-model = FishBoutEncoder(
+model = TransformerEncoder(
     input_dim=train_data.shape[-1],
     seq_len=config["data"]["sequence_length"],
     d_model=config["model"]["d_model"],
     nhead=config["model"]["nhead"],
     num_layers=config["model"]["num_layers"],
     dim_feedforward=config["model"]["dim_feedforward"],
-    dropout=config["model"]["dropout"]
+    dropout=config["model"]["dropout"],
+    learnable_mask_embedding=config["masking"]["learnable_mask_embedding"]
 ).to(device)
 
 print(model)
 
-# --- Setting optimizer ---
-if config["training"]["optimizer"].lower() == "adam":
+# Optimizer
+opt_name = config["training"]["optimizer"].lower()
+if opt_name == "adam":
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-elif config["training"]["optimizer"].lower() == "adamw":
+elif opt_name == "adamw":
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-elif config["training"]["optimizer"].lower() == "sgd":
+elif opt_name == "sgd":
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9)
 else:
     raise ValueError(f"Unknown optimizer: {config['training']['optimizer']}")
 
-# --- Setting loss function ---
-if config["training"]["loss"].lower() == "mse":
+# Loss
+loss_name = config["training"]["loss"].lower()
+if loss_name == "mse":
     criterion = nn.MSELoss()
-elif config["training"]["loss"].lower() == "cross_entropy":
+elif loss_name == "cross_entropy":
     criterion = nn.CrossEntropyLoss()
-    print("Using Cross Entropy Loss. Ensure data is one-hot encoded.")
 else:
     raise ValueError(f"Unknown loss function: {config['training']['loss']}")
 

@@ -1,0 +1,24 @@
+wandb: Starting wandb agent 🕵️
+2025-09-01 11:23:41,424 - wandb.wandb_agent - INFO - Running runs: []
+2025-09-01 11:23:41,774 - wandb.wandb_agent - INFO - Agent received command: run
+2025-09-01 11:23:41,774 - wandb.wandb_agent - INFO - Agent starting run with config:
+	model.d_model: 16
+	model.dim_feedforward: 16
+	model.dropout: 0.1
+	model.nhead: 4
+	model.num_layers: 3
+	training.batch_size: 64
+	training.lr: 3e-4
+2025-09-01 11:23:41,779 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python main.py --model.d_model=16 --model.dim_feedforward=16 --model.dropout=0.1 --model.nhead=4 --model.num_layers=3 --training.batch_size=64 --training.lr=3e-4
+2025-09-01 11:23:46,792 - wandb.wandb_agent - INFO - Running runs: ['j07kyk1s']
+wandb: Currently logged in as: klyczek (bozek-lab) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: WARNING Ignoring project 'zebrafish' when running a sweep.
+wandb: Tracking run with wandb version 0.21.1
+wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250901_112348-j07kyk1s
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run snowy-sweep-1
+wandb: ⭐️ View project at https://wandb.ai/bozek-lab/klyczek
+wandb: 🧹 View sweep at https://wandb.ai/bozek-lab/klyczek/sweeps/cj17bzt9
+wandb: 🚀 View run at https://wandb.ai/bozek-lab/klyczek/runs/j07kyk1s
+/projects/ag-bozek/klyczek/utils.py:69: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
