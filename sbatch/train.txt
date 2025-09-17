@@ -1,7 +1,0 @@
-wandb: Currently logged in as: klyczek (klyczek-university-of-warsaw) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.21.1
-wandb: Run data is saved locally in /projects/ag-bozek/klyczek/wandb/run-20250818_145417-gjiwn3s8
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run bumbling-music-17
-wandb: ⭐️ View project at https://wandb.ai/klyczek-university-of-warsaw/fish-bout-transformer
-wandb: 🚀 View run at https://wandb.ai/klyczek-university-of-warsaw/fish-bout-transformer/runs/gjiwn3s8

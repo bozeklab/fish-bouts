@@ -2,7 +2,6 @@ import wandb
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
 
@@ -13,6 +12,7 @@ def train_model(config,
                 train_loader, 
                 val_loader, 
                 criterion, 
+                class_weights,
                 optimizer, 
                 device
     ):
@@ -41,11 +41,8 @@ def train_model(config,
 
 
         for batch in train_loader:
-            # print(f"{batch=}")
             x = batch[0].to(device)
-            # print(f"{x.shape=}")
-            # print(f"{x=}")
-            x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio)
+            x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
             x_masked = x_masked.to(device)
             mask = mask.to(device)
             # print(f"{x_masked.shape=}")
@@ -116,7 +113,7 @@ def train_model(config,
             for batch in val_loader:
                 x = batch[0].to(device)
 
-                x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio)
+                x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
                 x_masked = x_masked.to(device)
                 mask = mask.to(device)
                 output = model(src=x_masked, mask_positions=mask)
@@ -201,7 +198,6 @@ def train_model(config,
                         labels=list(range(num_classes))
                     )
                     plt.figure(figsize=(8, 6))
-                    
                     plt.imshow(cm, aspect="auto")
                     plt.colorbar()
                     plt.title(f"Confusion Matrix (Epoch {epoch+1})")
@@ -217,6 +213,28 @@ def train_model(config,
                         wandb.log({"confusion_matrix_best": wandb.Image(plt), "best_epoch": epoch + 1})
                     plt.savefig("confusion_matrix_best.png")
                     print("Confusion matrix saved as confusion_matrix_best.png")
+                    plt.close()
+                    
+                    # Plot normalized confusion matrix
+                    cm_normalized = cm.astype("float") / cm.sum(axis=1, keepdims=True)
+
+                    plt.figure(figsize=(8, 6))
+                    plt.imshow(cm_normalized, aspect="auto")
+                    plt.colorbar()
+                    plt.title(f"Normalized Confusion Matrix (Epoch {epoch+1})")
+                    plt.xlabel("Predicted")
+                    plt.ylabel("True")
+                    plt.xticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+                    plt.yticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+
+                    for i in range(num_classes):
+                        for j in range(num_classes):
+                            plt.text(j, i, f"{cm_normalized[i, j]:.2f}", ha="center", va="center")
+
+                    if wandb_log:
+                        wandb.log({"normalized_confusion_matrix_best": wandb.Image(plt), "best_epoch": epoch + 1})
+                    plt.savefig("normalized_confusion_matrix_best.png")
+                    print("Normalized confusion matrix saved as normalized_confusion_matrix_best.png")
                     plt.close()
             else:
                 patience_counter += 1

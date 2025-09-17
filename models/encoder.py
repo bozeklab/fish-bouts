@@ -40,7 +40,7 @@ class TransformerEncoder(nn.Module):
     """
 
     def __init__(self, input_dim, seq_len, d_model, nhead,
-                 num_layers, dim_feedforward, dropout, learnable_mask_embedding):
+                 num_layers, dropout, learnable_mask_embedding):
         super().__init__()
         
         # Input projection to model dimension
@@ -53,6 +53,8 @@ class TransformerEncoder(nn.Module):
             self.mask_embedding = nn.Parameter(torch.zeros(d_model))
             nn.init.normal_(self.mask_embedding, mean=0.0, std=0.02)
 
+        dim_feedforward = d_model * 4  # commonly used value
+        
         # Transformer encoder (bidirectional attention)
         encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, 
                                                    nhead=nhead,

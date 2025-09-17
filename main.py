@@ -69,6 +69,20 @@ else:
     val_data   = torch.load(processed_dir + "/val_data.pt")
     test_data  = torch.load(processed_dir + "/test_data.pt")
 
+if config["masking"]["weighted"]:
+    print("Using weighted random masking based on class frequencies.")
+    # Compute class weights for weighted random masking
+    # assuming train_data is of shape (B, K, C) where C is one-hot
+    class_frequencies = train_data.mean(dim=(0, 1))
+    eps = 1e-9
+    class_weights = (class_frequencies + eps)**(-1)
+    class_weights = class_weights / class_weights.sum()
+    class_weights = class_weights.to(device)
+else:
+    print("Using uniform random masking.")
+    class_weights = None
+
+    
 print("Train data shape:", train_data.shape)
 print("Val data shape:", val_data.shape)
 print("Test data shape:", test_data.shape)
@@ -86,7 +100,7 @@ val_loader   = DataLoader(TensorDataset(val_data),   batch_size=config["training
 test_loader  = DataLoader(TensorDataset(test_data),  batch_size=config["training"]["batch_size"], shuffle=False)
 
 
-lr = float(wandb.config["training"]["lr"])  # ensure float
+lr = float(wandb.config["training"]["lr"])
 print(f"Using learning rate: {lr}")
 
 model = TransformerEncoder(
@@ -95,7 +109,6 @@ model = TransformerEncoder(
     d_model=config["model"]["d_model"],
     nhead=config["model"]["nhead"],
     num_layers=config["model"]["num_layers"],
-    dim_feedforward=config["model"]["dim_feedforward"],
     dropout=config["model"]["dropout"],
     learnable_mask_embedding=config["masking"]["learnable_mask_embedding"]
 ).to(device)
@@ -131,6 +144,7 @@ history = train_model(
     train_loader, 
     val_loader, 
     criterion, 
+    class_weights,
     optimizer, 
     device
 )

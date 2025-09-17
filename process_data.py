@@ -94,7 +94,6 @@ def process_data_and_split(config):
         random_state=seed
     ) 
     print(f"Validation size: {len(val_idx)}, Test size: {len(test_idx)}")
-    print(f"Validation: {val_idx}, Test: {test_idx}")
 
     # Filter out zero frames
     pca_train = filter_nonzero(pca[train_idx], nonzero_mask[train_idx])
