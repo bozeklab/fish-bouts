@@ -7,12 +7,12 @@ parameters:
   training.batch_size:
     values: [64]
   training.lr:
-    values: [1e-5, 1e-4, 1e-2]
+    values: [5e-5, 1e-5]
   model.d_model:
-    values: [256, 512]
+    values: [128, 512]
   model.num_layers:
-    values: [2, 3, 4]
-  model.nhead:
     values: [2, 4]
+  model.nhead:
+    values: [2, 8]
   model.dropout:
     values: [0.0]

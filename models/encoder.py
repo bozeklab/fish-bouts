@@ -66,7 +66,7 @@ class TransformerEncoder(nn.Module):
 
         self.output = nn.Linear(d_model, input_dim)
 
-    def forward(self, src, mask_positions):
+    def forward(self, src, mask_positions, return_embeddings=False):
         """
         src: (batch, seq_len, input_dim)
         mask_positions: (batch, seq_len) bool tensor
@@ -89,4 +89,7 @@ class TransformerEncoder(nn.Module):
 
         memory = self.encoder(x)  # (batch, seq_len, d_model)
         preds = self.output(memory)  # (batch, seq_len, target_dim)
-        return preds
+        if return_embeddings:
+            return preds, memory
+        else:
+            return preds

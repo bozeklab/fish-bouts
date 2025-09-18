@@ -29,6 +29,44 @@ def train_model(config,
     best_val_loss = float("inf")
     patience_counter = 0
 
+    # helper to plot and log confusion matrices
+    def _plot_and_log_cm(cm, title_prefix, filename_prefix, num_classes):
+        # Raw
+        plt.figure(figsize=(8, 6))
+        plt.imshow(cm, aspect="auto")
+        plt.colorbar()
+        plt.title(f"{title_prefix} Confusion Matrix")
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
+        plt.xticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+        plt.yticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+        for i in range(num_classes):
+            for j in range(num_classes):
+                plt.text(j, i, str(int(cm[i, j])), ha="center", va="center")
+        if wandb_log:
+            wandb.log({f"{filename_prefix}": wandb.Image(plt)})
+        plt.savefig(f"{filename_prefix}.png")
+        plt.close()
+
+        # Normalized (row-wise)
+        row_sums = cm.sum(axis=1, keepdims=True)
+        cm_norm = np.divide(cm, row_sums, where=row_sums!=0)
+        plt.figure(figsize=(8, 6))
+        plt.imshow(cm_norm, aspect="auto")
+        plt.colorbar()
+        plt.title(f"{title_prefix} Normalized Confusion Matrix")
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
+        plt.xticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+        plt.yticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
+        for i in range(num_classes):
+            for j in range(num_classes):
+                plt.text(j, i, f"{cm_norm[i, j]:.2f}", ha="center", va="center")
+        if wandb_log:
+            wandb.log({f"{filename_prefix}_normalized": wandb.Image(plt)})
+        plt.savefig(f"{filename_prefix}_normalized.png")
+        plt.close()
+
     for epoch in range(num_epochs):
         # ---- Training ----
         model.train()
@@ -39,21 +77,16 @@ def train_model(config,
         train_preds_all = []
         train_targets_all = []
 
-
         for batch in train_loader:
             x = batch[0].to(device)
             x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
             x_masked = x_masked.to(device)
             mask = mask.to(device)
-            # print(f"{x_masked.shape=}")
-            # print(f"{x_masked=}")
-            # print(f"{mask.shape=}")
+
             output = model(src=x_masked, mask_positions=mask)
-            # print(f"{output.shape=}")
-            # print(f"{output=}")
+
             # Loss only at masked positions
             loss = criterion(output[mask], x[mask])
-            # print(f"{loss=}")
 
             optimizer.zero_grad()
             loss.backward()
@@ -63,10 +96,6 @@ def train_model(config,
             train_batches += 1
 
             # ---- Accuracy ----
-            # print(f"{output.shape=}")
-            # print(f"{output[mask].shape=}")
-            # print(f"{x.shape=}")
-            # print(f"{x[mask].shape=}")
             preds = torch.argmax(output, dim=-1)
             targets = torch.argmax(x, dim=-1)
             correct = (preds[mask] == targets[mask]).sum().item()
@@ -78,26 +107,25 @@ def train_model(config,
                 train_preds_all.append(preds[mask].detach().cpu())
                 train_targets_all.append(targets[mask].detach().cpu())
 
-
         avg_train_loss = train_loss / train_batches
         train_acc = train_correct / train_total if train_total > 0 else 0.0
 
-
+        # Infer num_classes from last forward pass
         num_classes = output.size(-1)
 
-        # print(f"{train_preds_all=}")
-        # print(f"{train_targets_all=}")
+        # Convert train preds/targets to numpy for metrics & later CM
         if train_preds_all:
-            train_preds_all = torch.cat(train_preds_all).numpy()
-            train_targets_all = torch.cat(train_targets_all).numpy()
+            train_preds_np = torch.cat(train_preds_all).numpy()
+            train_targets_np = torch.cat(train_targets_all).numpy()
             train_f1 = f1_score(
-                train_targets_all, train_preds_all,
+                train_targets_np, train_preds_np,
                 average="macro",
                 labels=list(range(num_classes)),
                 zero_division=0
             )
-
         else:
+            train_preds_np = None
+            train_targets_np = None
             train_f1 = 0.0
 
         # ---- Validation ----
@@ -112,21 +140,15 @@ def train_model(config,
         with torch.no_grad():
             for batch in val_loader:
                 x = batch[0].to(device)
-
                 x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
                 x_masked = x_masked.to(device)
                 mask = mask.to(device)
+
                 output = model(src=x_masked, mask_positions=mask)
-                
                 loss = criterion(output[mask], x[mask])
                 val_loss += loss.item()
                 val_batches += 1
 
-                # ---- Accuracy ----
-                # print(f"{output.shape=}")
-                # print(f"{output[mask].shape=}")
-                # print(f"{x.shape=}")
-                # print(f"{x[mask].shape=}")
                 preds = torch.argmax(output, dim=-1)
                 targets = torch.argmax(x, dim=-1)
                 correct = (preds[mask] == targets[mask]).sum().item()
@@ -134,7 +156,6 @@ def train_model(config,
                 val_correct += correct
                 val_total += total
 
-                # ---- Collect for F1 (masked positions only) ----
                 if total > 0:
                     val_preds_all.append(preds[mask].detach().cpu())
                     val_targets_all.append(targets[mask].detach().cpu())
@@ -143,17 +164,18 @@ def train_model(config,
         val_acc = val_correct / val_total if val_total > 0 else 0.0
 
         if val_preds_all:
-            val_preds_all = torch.cat(val_preds_all).numpy()
-            val_targets_all = torch.cat(val_targets_all).numpy()
+            val_preds_np = torch.cat(val_preds_all).numpy()
+            val_targets_np = torch.cat(val_targets_all).numpy()
             val_f1 = f1_score(
-                val_targets_all, val_preds_all,
+                val_targets_np, val_preds_np,
                 average="macro",
                 labels=list(range(num_classes)),
                 zero_division=0
             )
         else:
+            val_preds_np = None
+            val_targets_np = None
             val_f1 = 0.0
-
 
         # ---- Logging ----
         history.append({
@@ -191,51 +213,19 @@ def train_model(config,
                 torch.save(model.state_dict(), save_best_path)
                 print(f"Validation loss improved. Model saved to {save_best_path}")
 
-                # --- Confusion matrix ---
-                if len(val_preds_all) > 0:
-                    cm = confusion_matrix(
-                        val_targets_all, val_preds_all,
-                        labels=list(range(num_classes))
-                    )
-                    plt.figure(figsize=(8, 6))
-                    plt.imshow(cm, aspect="auto")
-                    plt.colorbar()
-                    plt.title(f"Confusion Matrix (Epoch {epoch+1})")
-                    plt.xlabel("Predicted")
-                    plt.ylabel("True")
-                    plt.xticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
-                    plt.yticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
-
-                    for i in range(num_classes):
-                        for j in range(num_classes):
-                            plt.text(j, i, str(cm[i, j]), ha="center", va="center")
+                # --- Confusion matrices (VAL & TRAIN) on masked positions ---
+                if val_preds_np is not None:
+                    cm_val = confusion_matrix(val_targets_np, val_preds_np, labels=list(range(num_classes)))
+                    _plot_and_log_cm(cm_val, f"Validation (Epoch {epoch+1})", "confusion_matrix_val_best", num_classes)
                     if wandb_log:
-                        wandb.log({"confusion_matrix_best": wandb.Image(plt), "best_epoch": epoch + 1})
-                    plt.savefig("confusion_matrix_best.png")
-                    print("Confusion matrix saved as confusion_matrix_best.png")
-                    plt.close()
-                    
-                    # Plot normalized confusion matrix
-                    cm_normalized = cm.astype("float") / cm.sum(axis=1, keepdims=True)
+                        wandb.log({"best_epoch": epoch + 1})
 
-                    plt.figure(figsize=(8, 6))
-                    plt.imshow(cm_normalized, aspect="auto")
-                    plt.colorbar()
-                    plt.title(f"Normalized Confusion Matrix (Epoch {epoch+1})")
-                    plt.xlabel("Predicted")
-                    plt.ylabel("True")
-                    plt.xticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
-                    plt.yticks(ticks=np.arange(num_classes), labels=np.arange(num_classes))
-
-                    for i in range(num_classes):
-                        for j in range(num_classes):
-                            plt.text(j, i, f"{cm_normalized[i, j]:.2f}", ha="center", va="center")
-
+                if train_preds_np is not None:
+                    cm_train = confusion_matrix(train_targets_np, train_preds_np, labels=list(range(num_classes)))
+                    _plot_and_log_cm(cm_train, f"Train (Epoch {epoch+1})", "confusion_matrix_train_best", num_classes)
                     if wandb_log:
-                        wandb.log({"normalized_confusion_matrix_best": wandb.Image(plt), "best_epoch": epoch + 1})
-                    plt.savefig("normalized_confusion_matrix_best.png")
-                    print("Normalized confusion matrix saved as normalized_confusion_matrix_best.png")
-                    plt.close()
+                        wandb.log({"best_epoch": epoch + 1})
+
             else:
                 patience_counter += 1
                 print(f"No improvement. Early stopping patience {patience_counter}/{patience}")

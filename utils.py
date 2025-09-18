@@ -136,17 +136,3 @@ def compute_statistics(data):
     return mean, std, min_val, max_val
 
 
-def plot_loss_curve(history):
-    epochs = [h["epoch"] for h in history]
-    train_losses = [h["train_loss"] for h in history]
-    val_losses = [h["val_loss"] for h in history]
-
-    plt.figure(figsize=(8,5))
-    plt.plot(epochs, train_losses, label="Train Loss")
-    plt.plot(epochs, val_losses, label="Validation Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Training vs Validation Loss")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
