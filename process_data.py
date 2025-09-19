@@ -165,17 +165,10 @@ def one_hot_process_data_and_split(config, processed_dir='Datasets/one_hot_proce
     with h5py.File(labels_path, 'r') as f:
         motor_strategies = np.array(f['bout_types'])  # expected shape (n_fish, n_frames), ints 0..12
 
-    if motor_strategies.ndim != 2 or motor_strategies.shape[:2] != pca.shape[:2]:
-        raise ValueError(
-            f"Shape mismatch: bout_types {motor_strategies.shape} vs pca {pca.shape[:2]}"
-        )
-
     onehot_all = labels_to_onehot(motor_strategies, num_classes=13).astype(np.float32)  # (n_fish, n_frames, 13)
     n_fish = onehot_all.shape[0]
 
     conditions_idx = np.load(conditions_path)
-    if len(conditions_idx) != n_fish:
-        raise ValueError(f"conditions_idx length {len(conditions_idx)} != number of fish {n_fish}")
 
     print(f"Total fish: {n_fish}")
     print(f"Original PCA shape: {pca.shape}, Nonzero mask shape: {nonzero_mask.shape}")

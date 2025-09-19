@@ -14,15 +14,15 @@ def train_model(config,
                 criterion, 
                 class_weights,
                 optimizer, 
-                device
+                device,
+                save_best_path="best_model.pth",
+                wandb_log=True
     ):
     model.to(device)
 
     num_epochs=config["training"]["epochs"]
     mask_type=config["masking"]["type"]
     mask_ratio=config["masking"]["percentage"]
-
-    wandb_log=True
 
     history = []  # store {"epoch": X, "train_loss": Y, "val_loss": Z, "train_acc": A, "val_acc": B}
 
@@ -79,6 +79,7 @@ def train_model(config,
 
         for batch in train_loader:
             x = batch[0].to(device)
+            # Apply masking
             x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
             x_masked = x_masked.to(device)
             mask = mask.to(device)
@@ -209,8 +210,14 @@ def train_model(config,
             if avg_val_loss < best_val_loss - delta:
                 best_val_loss = avg_val_loss
                 patience_counter = 0
-                save_best_path=f"best_model.pth"
-                torch.save(model.state_dict(), save_best_path)
+                
+                torch.save({
+                    "config": config,
+                    "model_state_dict": model.state_dict(),
+                    "epoch": epoch,
+                    "val_loss": best_val_loss,
+                }, save_best_path)
+
                 print(f"Validation loss improved. Model saved to {save_best_path}")
 
                 # --- Confusion matrices (VAL & TRAIN) on masked positions ---

@@ -11,7 +11,6 @@ from torch import nn
 from train import train_model
 from process_data import process_data_and_split, one_hot_process_data_and_split
 from models.encoder import TransformerEncoder
-from models.decoder import TransformerDecoder
 
 
 # --- Load config ---
@@ -44,10 +43,6 @@ for k, v in dict(wandb.config).items():
 random.seed(config["seed"])
 np.random.seed(config["seed"])
 torch.manual_seed(config["seed"])
-
-# # --- wandb init ---
-# wandb.init(config=config)  
-# config = wandb.config
 
 # --- Device ---
 device = "cuda" if torch.cuda.is_available() else "cpu"

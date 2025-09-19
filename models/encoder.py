@@ -14,7 +14,7 @@ class PositionalEncoding(nn.Module):
         pe[:, 0::2] = torch.sin(position * div_term)  # even indices
         pe[:, 1::2] = torch.cos(position * div_term)  # odd indices
 
-        pe = pe.unsqueeze(0)  # (1, max_len, d_model)
+        pe = pe.unsqueeze(0)  # (1, max_len, d_model) 
         self.register_buffer('pe', pe)
 
     def forward(self, x):
@@ -66,7 +66,7 @@ class TransformerEncoder(nn.Module):
 
         self.output = nn.Linear(d_model, input_dim)
 
-    def forward(self, src, mask_positions, return_embeddings=False):
+    def forward(self, src, mask_positions=None, return_embeddings=False):
         """
         src: (batch, seq_len, input_dim)
         mask_positions: (batch, seq_len) bool tensor
@@ -84,8 +84,9 @@ class TransformerEncoder(nn.Module):
             mask_tok = mask_tok.expand(x.size(0), x.size(1), -1)
 
             # Create a float mask for blending
-            m = mask_positions.unsqueeze(-1).to(x.dtype)  # (batch, seq_len, 1)
-            x = x * (1.0 - m) + mask_tok * m
+            if mask_positions is not None:
+                m = mask_positions.unsqueeze(-1).to(x.dtype)  # (batch, seq_len, 1)
+                x = x * (1.0 - m) + mask_tok * m
 
         memory = self.encoder(x)  # (batch, seq_len, d_model)
         preds = self.output(memory)  # (batch, seq_len, target_dim)

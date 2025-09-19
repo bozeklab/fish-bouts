@@ -4,15 +4,61 @@ metric:
   name: val_loss
   goal: minimize
 parameters:
-  training.batch_size:
-    values: [64]
-  training.lr:
-    values: [5e-5, 1e-5]
-  model.d_model:
-    values: [128, 512]
-  model.num_layers:
-    values: [2, 4]
   model.nhead:
     values: [2, 8]
+  model.num_layers:
+    values: [2, 4]
+  model.d_model:
+    values: [128, 512]
   model.dropout:
     values: [0.0]
+
+  training.batch_size:
+    values: [256]
+  training.lr:
+    values: [5e-5, 1e-5]
+  training.epochs:
+    values: [500]
+  training.optimizer:
+    values: ['adam']
+  training.loss:
+    values: ['cross_entropy']
+  training.train_fraction:
+    values: [0.7]
+  training.val_fraction:
+    values: [0.15]
+  training.early_stopping.enabled:
+    values: [True]
+  training.early_stopping.patience:
+    values: [30]
+  training.early_stopping.delta:
+    values: [1e-4]
+  training.single_instance_overfit:
+    values: [False]
+  training.two_tasks:
+    values: [False]
+
+  masking.type:
+    values: ['random']
+  masking.percentage:
+    values: [0.1]
+  masking.weighted:
+    values: [True]
+  masking.learnable_mask_embedding:
+    values: [True]
+
+  data.one_hot:
+    values: [True]
+  data.process_data_first:
+    values: [True] 
+  data.raw_path:
+    values: ['Datasets/JM_data/pool_ex8_PCs.h5']
+  data.conditions_path:
+    values: ['sensory_contexts_data.npy']
+  data.processed_dir:
+    values: ["Datasets/one_hot_processed/"]
+  data.sequence_length:
+    values: [10] 
+    
+  seed:
+    values: [42]
