@@ -141,7 +141,8 @@ history = train_model(
     criterion, 
     class_weights,
     optimizer, 
-    device
+    device,
+    one_hot_encoded=config["data"]["one_hot"],
 )
 print("Training complete.")
 

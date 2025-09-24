@@ -5,18 +5,18 @@ metric:
   goal: minimize
 parameters:
   model.nhead:
-    values: [2, 8]
+    values: [8]
   model.num_layers:
     values: [2, 4]
   model.d_model:
-    values: [128, 512]
+    values: [512]
   model.dropout:
     values: [0.0]
 
   training.batch_size:
     values: [256]
   training.lr:
-    values: [5e-5, 1e-5]
+    values: [1e-6, 5e-6]
   training.epochs:
     values: [500]
   training.optimizer:
@@ -28,13 +28,13 @@ parameters:
   training.val_fraction:
     values: [0.15]
   training.early_stopping.enabled:
-    values: [True]
+    values: [False]
   training.early_stopping.patience:
     values: [30]
   training.early_stopping.delta:
     values: [1e-4]
   training.single_instance_overfit:
-    values: [False]
+    values: [True]
   training.two_tasks:
     values: [False]
 
@@ -56,9 +56,11 @@ parameters:
   data.conditions_path:
     values: ['sensory_contexts_data.npy']
   data.processed_dir:
-    values: ["Datasets/one_hot_processed/"]
+    values: ["Datasets/processed-10-20/"]
   data.sequence_length:
     values: [10] 
+  data.input_dim:
+    values: [20]
     
   seed:
     values: [42]

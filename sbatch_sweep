@@ -6,10 +6,10 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --time=7-00:00:00
 
-#SBATCH --job-name=full-config
+#SBATCH --job-name=overfit-test
 #SBATCH --output=sbatch/wandb_sweep-%j.txt
 
 ### begin of executable commands
 source zeb/bin/activate
 
-wandb agent bozek-lab/klyczek/bh4pstvz
+wandb agent bozek-lab/klyczek/8jrla7o6

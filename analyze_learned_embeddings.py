@@ -65,13 +65,13 @@ with open("config.yaml", "r") as f:
     config = yaml.safe_load(f)
 
 
-# better not to use the data processing, because there is some randomness
-# instead, we process the data directly here
-labels_path = 'Datasets/JM_data/filtered_jmpool_kin.h5'
-with h5py.File(labels_path, 'r') as f:
-    motor_strategies = np.array(f['bout_types'])  # expected shape (n_fish, n_frames), ints 0..12
+# # better not to use the data processing, because there is some randomness
+# # instead, we process the data directly here
+# labels_path = 'Datasets/JM_data/filtered_jmpool_kin.h5'
+# with h5py.File(labels_path, 'r') as f:
+#     motor_strategies = np.array(f['bout_types'])  # expected shape (n_fish, n_frames), ints 0..12
 
-onehot_all = labels_to_onehot(motor_strategies, num_classes=13).astype(np.float32)  # (n_fish, n_frames, 13)
+# onehot_all = labels_to_onehot(motor_strategies, num_classes=13).astype(np.float32)  # (n_fish, n_frames, 13)
 
 
 

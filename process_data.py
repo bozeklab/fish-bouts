@@ -4,7 +4,7 @@ import h5py
 import os
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-
+from utils import compute_statistics
 
 def make_sliding_windows(data, window_size):
     print(f"Creating sliding windows of size {window_size}...")
@@ -124,8 +124,8 @@ def process_data_and_split(config):
     pca_val   = (pca_val - mean) / std
     pca_test  = (pca_test - mean) / std
     # -------------------------------------------------------------
-    # print("computing statistics of normalized data...")
-    # compute_statistics(pca_train)
+    print("computing statistics of normalized data...")
+    compute_statistics(pca_train)
     
     # Convert to tensors and save
     all_splits = {'train': [], 'val': [], 'test': []}
@@ -134,6 +134,7 @@ def process_data_and_split(config):
     all_splits['val'] = torch.tensor(X_val, dtype=torch.float32)
     all_splits['test'] = torch.tensor(X_test, dtype=torch.float32)
 
+    print(f"{processed_dir=}")
     os.makedirs(processed_dir, exist_ok=True)
 
     for split_name, tensor in all_splits.items():

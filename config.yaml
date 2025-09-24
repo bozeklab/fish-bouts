@@ -27,10 +27,11 @@ masking:
 
 data:
   process_data_first: true
-  one_hot: True
+  one_hot: true
   raw_path: 'Datasets/JM_data/pool_ex8_PCs.h5'
   conditions_path: 'sensory_contexts_data.npy'
-  processed_dir: "Datasets/one_hot_processed/"
+  processed_dir: "Datasets/processed-10-20/"
   sequence_length: 10
+  input_dim: 20
 
 seed: 42

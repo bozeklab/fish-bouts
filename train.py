@@ -16,7 +16,8 @@ def train_model(config,
                 optimizer, 
                 device,
                 save_best_path="best_model.pth",
-                wandb_log=True
+                wandb_log=True, 
+                one_hot_encoded=False
     ):
     model.to(device)
 
@@ -77,6 +78,11 @@ def train_model(config,
         train_preds_all = []
         train_targets_all = []
 
+        train_acc = 0.0
+        train_f1 = 0.0
+        val_acc = 0.0
+        val_f1 = 0.0
+
         for batch in train_loader:
             x = batch[0].to(device)
             # Apply masking
@@ -97,37 +103,39 @@ def train_model(config,
             train_batches += 1
 
             # ---- Accuracy ----
-            preds = torch.argmax(output, dim=-1)
-            targets = torch.argmax(x, dim=-1)
-            correct = (preds[mask] == targets[mask]).sum().item()
-            total = mask.sum().item()
-            train_correct += correct
-            train_total += total
+            if one_hot_encoded:
+                preds = torch.argmax(output, dim=-1)
+                targets = torch.argmax(x, dim=-1)
+                correct = (preds[mask] == targets[mask]).sum().item()
+                total = mask.sum().item()
+                train_correct += correct
+                train_total += total
 
-            if total > 0:
-                train_preds_all.append(preds[mask].detach().cpu())
-                train_targets_all.append(targets[mask].detach().cpu())
-
+                if total > 0:
+                    train_preds_all.append(preds[mask].detach().cpu())
+                    train_targets_all.append(targets[mask].detach().cpu())
+                    
         avg_train_loss = train_loss / train_batches
-        train_acc = train_correct / train_total if train_total > 0 else 0.0
+        if one_hot_encoded:
+            train_acc = train_correct / train_total if train_total > 0 else 0.0
 
-        # Infer num_classes from last forward pass
-        num_classes = output.size(-1)
+            # Infer num_classes from last forward pass
+            num_classes = output.size(-1)
 
-        # Convert train preds/targets to numpy for metrics & later CM
-        if train_preds_all:
-            train_preds_np = torch.cat(train_preds_all).numpy()
-            train_targets_np = torch.cat(train_targets_all).numpy()
-            train_f1 = f1_score(
-                train_targets_np, train_preds_np,
-                average="macro",
-                labels=list(range(num_classes)),
-                zero_division=0
-            )
-        else:
-            train_preds_np = None
-            train_targets_np = None
-            train_f1 = 0.0
+            # Convert train preds/targets to numpy for metrics & later CM
+            if train_preds_all:
+                train_preds_np = torch.cat(train_preds_all).numpy()
+                train_targets_np = torch.cat(train_targets_all).numpy()
+                train_f1 = f1_score(
+                    train_targets_np, train_preds_np,
+                    average="macro",
+                    labels=list(range(num_classes)),
+                    zero_division=0
+                )
+            else:
+                train_preds_np = None
+                train_targets_np = None
+                train_f1 = 0.0
 
         # ---- Validation ----
         model.eval()
@@ -150,33 +158,36 @@ def train_model(config,
                 val_loss += loss.item()
                 val_batches += 1
 
-                preds = torch.argmax(output, dim=-1)
-                targets = torch.argmax(x, dim=-1)
-                correct = (preds[mask] == targets[mask]).sum().item()
-                total = mask.sum().item()
-                val_correct += correct
-                val_total += total
+                if one_hot_encoded:
+                    preds = torch.argmax(output, dim=-1)
+                    targets = torch.argmax(x, dim=-1)
+                    correct = (preds[mask] == targets[mask]).sum().item()
+                    total = mask.sum().item()
+                    val_correct += correct
+                    val_total += total
 
-                if total > 0:
-                    val_preds_all.append(preds[mask].detach().cpu())
-                    val_targets_all.append(targets[mask].detach().cpu())
-
+                    if total > 0:
+                        val_preds_all.append(preds[mask].detach().cpu())
+                        val_targets_all.append(targets[mask].detach().cpu())
+        
+        
         avg_val_loss = val_loss / val_batches
-        val_acc = val_correct / val_total if val_total > 0 else 0.0
+        if one_hot_encoded:
+            val_acc = val_correct / val_total if val_total > 0 else 0.0
 
-        if val_preds_all:
-            val_preds_np = torch.cat(val_preds_all).numpy()
-            val_targets_np = torch.cat(val_targets_all).numpy()
-            val_f1 = f1_score(
-                val_targets_np, val_preds_np,
-                average="macro",
-                labels=list(range(num_classes)),
-                zero_division=0
-            )
-        else:
-            val_preds_np = None
-            val_targets_np = None
-            val_f1 = 0.0
+            if val_preds_all:
+                val_preds_np = torch.cat(val_preds_all).numpy()
+                val_targets_np = torch.cat(val_targets_all).numpy()
+                val_f1 = f1_score(
+                    val_targets_np, val_preds_np,
+                    average="macro",
+                    labels=list(range(num_classes)),
+                    zero_division=0
+                )
+            else:
+                val_preds_np = None
+                val_targets_np = None
+                val_f1 = 0.0
 
         # ---- Logging ----
         history.append({
@@ -220,18 +231,19 @@ def train_model(config,
 
                 print(f"Validation loss improved. Model saved to {save_best_path}")
 
+                if one_hot_encoded:
                 # --- Confusion matrices (VAL & TRAIN) on masked positions ---
-                if val_preds_np is not None:
-                    cm_val = confusion_matrix(val_targets_np, val_preds_np, labels=list(range(num_classes)))
-                    _plot_and_log_cm(cm_val, f"Validation (Epoch {epoch+1})", "confusion_matrix_val_best", num_classes)
-                    if wandb_log:
-                        wandb.log({"best_epoch": epoch + 1})
+                    if val_preds_np is not None:
+                        cm_val = confusion_matrix(val_targets_np, val_preds_np, labels=list(range(num_classes)))
+                        _plot_and_log_cm(cm_val, f"Validation (Epoch {epoch+1})", "confusion_matrix_val_best", num_classes)
+                        if wandb_log:
+                            wandb.log({"best_epoch": epoch + 1})
 
-                if train_preds_np is not None:
-                    cm_train = confusion_matrix(train_targets_np, train_preds_np, labels=list(range(num_classes)))
-                    _plot_and_log_cm(cm_train, f"Train (Epoch {epoch+1})", "confusion_matrix_train_best", num_classes)
-                    if wandb_log:
-                        wandb.log({"best_epoch": epoch + 1})
+                    if train_preds_np is not None:
+                        cm_train = confusion_matrix(train_targets_np, train_preds_np, labels=list(range(num_classes)))
+                        _plot_and_log_cm(cm_train, f"Train (Epoch {epoch+1})", "confusion_matrix_train_best", num_classes)
+                        if wandb_log:
+                            wandb.log({"best_epoch": epoch + 1})
 
             else:
                 patience_counter += 1

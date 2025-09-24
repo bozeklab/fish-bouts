@@ -81,24 +81,25 @@ def apply_mask(x, mask_type, mask_ratio, weights):
                 w = torch.as_tensor(weights, device=device, dtype=torch.float32)
                 w = torch.nan_to_num(w, nan=0.0, posinf=0.0, neginf=0.0).clamp_min(0)
 
-                scores = (x.to(torch.float32) * w.view(1,1,-1)).sum(dim=-1)  # (B,K) ≥ 0
+                scores = (x.to(torch.float32) * w.view(1,1,-1)).sum(dim=-1)
 
                 eps = 1e-12
                 logits = torch.log(scores.clamp_min(eps))   # log turns linear weights into logits
-                probs  = torch.softmax(logits, dim=1)       # (B,K) strictly > 0, rows sum to 1
+                probs  = torch.softmax(logits, dim=1)
 
-            masked_indices = torch.multinomial(probs, num_samples=num_masked_tokens, replacement=False) 
+            masked_indices = torch.multinomial(probs, num_samples=num_masked_tokens, replacement=False)
             
             row_idx = torch.arange(B, device=masked_indices.device).unsqueeze(1)   # (B,1)
             x_masked[row_idx, masked_indices] = 0.0
             mask[row_idx, masked_indices] = True
+            
 
         elif mask_type == 'last':
             x_masked[:, -num_masked_tokens:] = 0.0
             mask[:, -num_masked_tokens:] = True
         else:
             raise ValueError("mask_type must be 'random' or 'last'")
-    
+        print(f"{x_masked=}, {mask=}, {masked_indices=}")
     return x_masked, mask
 
 
