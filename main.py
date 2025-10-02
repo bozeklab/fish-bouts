@@ -9,18 +9,18 @@ from torch.utils.data import DataLoader, TensorDataset
 from torch import nn
 
 from train import train_model
-from process_data import process_data_and_split, one_hot_process_data_and_split
+from process_data import process_data_and_split
 from models.encoder import TransformerEncoder
 
 
-# --- Load config ---
+# Config
 with open("config.yaml", "r") as f:
     base_cfg = yaml.safe_load(f)
 
-# --- wandb init --- (let the agent set project/entity)
+# wandb init
 wandb.init(config=base_cfg)
 
-# --- Merge sweep dot-keys into nested dict ---
+# Merge sweep dot-keys into nested dict
 def set_by_dots(d, dotted_key, value):
     ks = dotted_key.split(".")
     cur = d
@@ -35,71 +35,77 @@ for k, v in dict(wandb.config).items():
     if "." in k:
         set_by_dots(config, k, v)
     else:
-        # top-level overrides (if any)
         config[k] = v
 
+pprint.pprint(config)
 
-# --- Setting random seeds for reproducibility ---
+# Set random seeds for reproducibility
 random.seed(config["seed"])
 np.random.seed(config["seed"])
 torch.manual_seed(config["seed"])
+torch.cuda.manual_seed_all(config["seed"])
 
-# --- Device ---
+# Device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-# --- Prepare data ---
+# Data
 if config["data"]["process_data_first"]:
-    if config["data"]["one_hot"]:
-        data_splits = one_hot_process_data_and_split(config)
-    else:
-        data_splits = process_data_and_split(config)
+    # Process data
+    data_splits = process_data_and_split(config, one_hot_encode=config["data"]["one_hot"])
     
     train_data = data_splits['train']
     val_data   = data_splits['val']
     test_data  = data_splits['test']
 else:
+    # Load the previously processed data
     processed_dir = config["data"]["processed_dir"]
+
     train_data = torch.load(processed_dir + "/train_.pt")
     val_data   = torch.load(processed_dir + "/val_data.pt")
     test_data  = torch.load(processed_dir + "/test_data.pt")
 
 if config["masking"]["weighted"]:
+    # Compute class frequencies for weighted random masking
     print("Using weighted random masking based on class frequencies.")
-    # Compute class weights for weighted random masking
-    # assuming train_data is of shape (B, K, C) where C is one-hot
-    class_frequencies = train_data.mean(dim=(0, 1))
-    eps = 1e-9
+
+    flat_labels = train_data["y"].view(-1) # fl
+    unique_labels = torch.unique(flat_labels)
+    print("Unique labels:", unique_labels.tolist())
+
+    class_frequencies = torch.bincount(flat_labels, minlength=unique_labels.max().item()+1)
+    
+    for i, f in enumerate(class_frequencies):
+        if i in unique_labels:
+            print(f"Label {i}: {f} ({f/flat_labels.numel():.4%})")
+
+    # weights should be inversely proportional to the frequencies
+    eps = 1e-12
     class_weights = (class_frequencies + eps)**(-1)
-    class_weights = class_weights / class_weights.sum()
     class_weights = class_weights.to(device)
 else:
+    # Just use uniform random masking
     print("Using uniform random masking.")
     class_weights = None
 
-    
-print("Train data shape:", train_data.shape)
-print("Val data shape:", val_data.shape)
-print("Test data shape:", test_data.shape)
 
-# small dataset for overfitting test
+# extract a single instance for overfitting test
 if config["training"]["single_instance_overfit"]:
     print("Using only a single train instance for overfitting test.")
-    small_train_data = train_data[:1]
-    print("Train data shape:", small_train_data.shape)
-    train_loader = DataLoader(TensorDataset(small_train_data), batch_size=1, shuffle=True)
+    single_train_instance = train_data[:1]
+    train_loader = DataLoader(TensorDataset(single_train_instance), batch_size=1, shuffle=True)
 else:
-    train_loader = DataLoader(TensorDataset(train_data), batch_size=config["training"]["batch_size"], shuffle=True)
+    train_loader = DataLoader(TensorDataset(train_data["x"], train_data["y"]), batch_size=config["training"]["batch_size"], shuffle=True)
 
-val_loader   = DataLoader(TensorDataset(val_data),   batch_size=config["training"]["batch_size"], shuffle=False)
-test_loader  = DataLoader(TensorDataset(test_data),  batch_size=config["training"]["batch_size"], shuffle=False)
+val_loader   = DataLoader(TensorDataset(val_data["x"], val_data["y"]) ,   batch_size=config["training"]["batch_size"], shuffle=False)
+test_loader  = DataLoader(TensorDataset(test_data["x"], test_data["y"]),  batch_size=config["training"]["batch_size"], shuffle=False)
 
 
-lr = float(wandb.config["training"]["lr"])
+lr = float(config["training"]["lr"])
 print(f"Using learning rate: {lr}")
 
 model = TransformerEncoder(
-    input_dim=train_data.shape[-1],
+    input_dim=train_data["x"].shape[-1],
     seq_len=config["data"]["sequence_length"],
     d_model=config["model"]["d_model"],
     nhead=config["model"]["nhead"],
@@ -122,16 +128,16 @@ else:
     raise ValueError(f"Unknown optimizer: {config['training']['optimizer']}")
 
 # Loss
-loss_name = config["training"]["loss"].lower()
-if loss_name == "mse":
+reconstruction_loss_name = config["training"]["reconstruction_loss"].lower()
+if reconstruction_loss_name == "mse":
     criterion = nn.MSELoss()
-elif loss_name == "cross_entropy":
+elif reconstruction_loss_name == "cross_entropy":
     criterion = nn.CrossEntropyLoss()
 else:
     raise ValueError(f"Unknown loss function: {config['training']['loss']}")
 
 
-# --- Training ---
+# Training
 print("Starting training...")
 history = train_model(
     config,
@@ -147,10 +153,11 @@ history = train_model(
 print("Training complete.")
 
 
-# --- Save model ---
-model_path = "fish_bout_transformer.pth"
-torch.save(model.state_dict(), model_path)
-wandb.save(model_path)
-print(f"Model saved to {model_path}")
+# Save model
+if config["wandb"]["log"]:
+    model_path = "trained_model.pth"
+    torch.save(model.state_dict(), model_path)
+    wandb.save(model_path)
+    print(f"Model saved to {model_path}")
 
 wandb.finish()

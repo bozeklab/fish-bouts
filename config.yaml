@@ -9,15 +9,15 @@ training:
   lr: 3e-4
   epochs: 2
   optimizer: adam
-  loss: cross_entropy
+  reconstruction_loss: mse
+  classification_loss: cross_entropy
   train_fraction: 0.7
   val_fraction: 0.15
   early_stopping:
     enabled: true
     patience: 30
     delta: 1e-4
-  single_instance_overfit: True
-  two_tasks: True
+  single_instance_overfit: False
 
 masking:
   type: random
@@ -26,7 +26,7 @@ masking:
   learnable_mask_embedding: True
 
 data:
-  process_data_first: true
+  process_data_first: True
   one_hot: true
   raw_path: 'Datasets/JM_data/pool_ex8_PCs.h5'
   conditions_path: 'sensory_contexts_data.npy'
@@ -35,3 +35,6 @@ data:
   input_dim: 20
 
 seed: 42
+
+wandb:
+  log: False

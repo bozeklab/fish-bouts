@@ -31,4 +31,4 @@ print("Conditions array:", conditions)
 print("Conditions index shape:", conditions_idx.shape)
 print("Conditions index:", conditions_idx)
 
-np.save("sensory_contexts_data.npy", conditions_idx)
+np.save("Datasets/sensory_contexts_data.npy", conditions_idx)

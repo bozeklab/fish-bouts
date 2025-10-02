@@ -16,7 +16,6 @@ def train_model(config,
                 optimizer, 
                 device,
                 save_best_path="best_model.pth",
-                wandb_log=True, 
                 one_hot_encoded=False
     ):
     model.to(device)
@@ -24,6 +23,8 @@ def train_model(config,
     num_epochs=config["training"]["epochs"]
     mask_type=config["masking"]["type"]
     mask_ratio=config["masking"]["percentage"]
+    
+    wandb_log = config["wandb"]["log"]
 
     history = []  # store {"epoch": X, "train_loss": Y, "val_loss": Z, "train_acc": A, "val_acc": B}
 
@@ -82,17 +83,23 @@ def train_model(config,
         train_f1 = 0.0
         val_acc = 0.0
         val_f1 = 0.0
-
+        train_aggregated_masked_classes_array = torch.zeros(class_weights.shape[0], device=device)
+        val_aggregated_masked_classes_array = torch.zeros(class_weights.shape[0], device=device)
         for batch in train_loader:
             x = batch[0].to(device)
+            y = batch[1].to(device)
+            print(f"{y.shape=}")
             # Apply masking
-            x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
+            x_masked, mask, masked_classes_array = apply_mask(x, y, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights, one_hot_encoded=one_hot_encoded)
+            print(f"{masked_classes_array=}")
+            print(f"{train_aggregated_masked_classes_array=}")
+            train_aggregated_masked_classes_array += masked_classes_array
             x_masked = x_masked.to(device)
             mask = mask.to(device)
 
             output = model(src=x_masked, mask_positions=mask)
 
-            # Loss only at masked positions
+            # Reconstructon loss only at masked positions
             loss = criterion(output[mask], x[mask])
 
             optimizer.zero_grad()
@@ -149,7 +156,8 @@ def train_model(config,
         with torch.no_grad():
             for batch in val_loader:
                 x = batch[0].to(device)
-                x_masked, mask = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights)
+                x_masked, mask, masked_classes_array = apply_mask(x, mask_type=mask_type, mask_ratio=mask_ratio, weights=class_weights, one_hot_encoded=one_hot_encoded)
+                val_aggregated_masked_classes_array += masked_classes_array
                 x_masked = x_masked.to(device)
                 mask = mask.to(device)
 
@@ -169,8 +177,14 @@ def train_model(config,
                     if total > 0:
                         val_preds_all.append(preds[mask].detach().cpu())
                         val_targets_all.append(targets[mask].detach().cpu())
-        
-        
+        print(f"{train_aggregated_masked_classes_array=}")
+        print(f"{val_aggregated_masked_classes_array=}")
+        print("After normalization:")
+        train_aggregated_masked_classes_array /= train_aggregated_masked_classes_array.sum()
+        val_aggregated_masked_classes_array /= val_aggregated_masked_classes_array.sum()
+        print(f"{train_aggregated_masked_classes_array=}")
+        print(f"{val_aggregated_masked_classes_array=}")
+
         avg_val_loss = val_loss / val_batches
         if one_hot_encoded:
             val_acc = val_correct / val_total if val_total > 0 else 0.0
